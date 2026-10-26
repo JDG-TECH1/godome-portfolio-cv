@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="74" y1="25" x2="868" y2="514" gradientUnits="userSpaceOnUse"><stop stop-color="#DCEBD9"/><stop offset="1" stop-color="#9FC79F"/></linearGradient>
+    <linearGradient id="land" x1="330" y1="104" x2="718" y2="415" gradientUnits="userSpaceOnUse"><stop stop-color="#88BB7A"/><stop offset=".55" stop-color="#B9D78E"/><stop offset="1" stop-color="#74A98B"/></linearGradient>
+  </defs>
+  <rect width="960" height="540" rx="34" fill="url(#bg)"/>
+  <path d="M0 392 140 319l108 34 140-136 115 41 128-147 166 36 163-104v497H0V392Z" fill="#739C83" fill-opacity=".25"/>
+  <path d="M145 101 325 58l73 99-132 91-141-38 20-109Z" fill="#A7CF8B" stroke="#F6FFF0" stroke-width="7"/>
+  <path d="m430 83 127-31 91 86-46 97-148-18-24-134Z" fill="#80B778" stroke="#F6FFF0" stroke-width="7"/>
+  <path d="m690 89 143 37 19 110-128 61-94-62 60-146Z" fill="#BCD88A" stroke="#F6FFF0" stroke-width="7"/>
+  <path d="m206 267 119-87 103 47-12 142-137 57-85-64 12-95Z" fill="#D0DD98" stroke="#F6FFF0" stroke-width="7"/>
+  <path d="m467 238 143-17 78 84-47 121-156 11-70-92 52-107Z" fill="url(#land)" stroke="#F6FFF0" stroke-width="7"/>
+  <path d="m727 317 116-58 85 56-12 110-125 34-85-53 21-89Z" fill="#A4C98A" stroke="#F6FFF0" stroke-width="7"/>
+  <path d="M99 449c144-69 231-108 336-147s192-71 384-168" stroke="#FCF6D9" stroke-opacity=".8" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 21"/>
+  <circle cx="529" cy="272" r="18" fill="#E66E54" stroke="#FFFDF6" stroke-width="8"/><path d="M529 286v28" stroke="#E66E54" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="529" cy="272" r="38" stroke="#E66E54" stroke-opacity=".35" stroke-width="3"/>
+</svg>

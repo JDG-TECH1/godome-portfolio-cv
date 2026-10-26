@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="76" y1="32" x2="888" y2="510" gradientUnits="userSpaceOnUse"><stop stop-color="#ECEBFA"/><stop offset="1" stop-color="#C9D9EE"/></linearGradient>
+    <linearGradient id="chart" x1="179" y1="366" x2="765" y2="179" gradientUnits="userSpaceOnUse"><stop stop-color="#50B69A"/><stop offset="1" stop-color="#6376CE"/></linearGradient>
+  </defs>
+  <rect width="960" height="540" rx="34" fill="url(#bg)"/>
+  <circle cx="831" cy="99" r="126" fill="#FFF5D7" fill-opacity=".72"/><circle cx="112" cy="440" r="142" fill="#D7F0E4" fill-opacity=".7"/>
+  <rect x="92" y="63" width="776" height="419" rx="26" fill="#FFFFFF"/>
+  <path d="M92 89c0-14.36 11.64-26 26-26h724c14.36 0 26 11.64 26 26v51H92V89Z" fill="#162B4B"/>
+  <circle cx="128" cy="102" r="8" fill="#FF9C7C"/><circle cx="153" cy="102" r="8" fill="#F2D17A"/><circle cx="178" cy="102" r="8" fill="#77D6B1"/>
+  <path d="M215 102h195" stroke="#EAF1FF" stroke-width="11" stroke-linecap="round"/>
+  <rect x="127" y="175" width="202" height="114" rx="18" fill="#E0F2E8"/>
+  <rect x="353" y="175" width="202" height="114" rx="18" fill="#E9EAF8"/>
+  <rect x="579" y="175" width="251" height="114" rx="18" fill="#FFF1DC"/>
+  <path d="M156 208h90" stroke="#709181" stroke-width="9" stroke-linecap="round"/><path d="M156 252h120" stroke="#25846E" stroke-width="23" stroke-linecap="round"/>
+  <path d="M382 208h90" stroke="#8189A5" stroke-width="9" stroke-linecap="round"/><path d="M382 252h109" stroke="#6C75BA" stroke-width="23" stroke-linecap="round"/>
+  <path d="M609 208h123" stroke="#A08F6B" stroke-width="9" stroke-linecap="round"/><path d="M609 252h83" stroke="#DBA14C" stroke-width="23" stroke-linecap="round"/>
+  <path d="M134 371h693" stroke="#EDF0F4" stroke-width="2"/>
+  <path d="m150 424 93-38 96 18 102-78 87 29 110-78 73 21" stroke="url(#chart)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="150" cy="424" r="8" fill="#50B69A"/><circle cx="243" cy="386" r="8" fill="#50B69A"/><circle cx="339" cy="404" r="8" fill="#55AFA8"/><circle cx="441" cy="326" r="8" fill="#5A9DB7"/><circle cx="528" cy="355" r="8" fill="#5C90C1"/><circle cx="638" cy="277" r="8" fill="#607FC9"/><circle cx="711" cy="298" r="8" fill="#6376CE"/>
+</svg>
