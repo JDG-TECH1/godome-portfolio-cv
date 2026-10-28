@@ -4,81 +4,95 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="CV de GODOME KOFFI (Jean-David), développeur Full Stack, ingénieur IA générative et spécialiste de l’automatisation en Côte d’Ivoire.">
-  <title>CV — GODOME KOFFI (Jean-David) | Développeur Full Stack & IA</title>
+  <meta name="description" content="CV de GODOME KOFFI (Jean-David), développeur Full Stack, ingénieur IA générative et spécialiste de l’automatisation.">
+  <title>GODOME KOFFI (Jean-David) — Développeur Full Stack &amp; IA</title>
   <style>
     :root {
       color-scheme: light;
-      --ink: #0f172a;
-      --muted: #475569;
-      --blue: #2563eb;
-      --line: #dbe3ef;
+      --navy: #0d2946;
+      --navy-light: #173a5d;
+      --ink: #17283b;
+      --muted: #526174;
+      --lime: #e4ffb5;
+      --lime-strong: #b6e477;
+      --line: #d7dfd1;
       --paper: #fff;
-      --wash: #f5f8fc;
     }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: #e9eef6;
-      color: var(--ink);
-      font: 15px/1.55 Arial, Helvetica, sans-serif;
-    }
-    a { color: #1748a5; text-decoration-thickness: 1px; text-underline-offset: 2px; }
-    .actions { display: flex; justify-content: center; gap: 12px; padding: 18px; }
-    .actions a, .actions button {
-      border: 1px solid var(--blue);
-      border-radius: 7px;
-      background: var(--blue);
-      color: #fff;
-      cursor: pointer;
-      font: inherit;
-      font-weight: 700;
-      padding: 9px 16px;
-      text-decoration: none;
-    }
-    .actions a { background: transparent; color: var(--blue); }
-    main {
-      width: min(940px, calc(100% - 32px));
-      margin: 0 auto 36px;
-      padding: 48px 56px;
-      background: var(--paper);
-      box-shadow: 0 16px 48px #0f172a18;
-    }
-    header { border-bottom: 2px solid var(--ink); padding-bottom: 22px; }
-    .eyebrow { color: var(--blue); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-    h1 { margin: 6px 0 2px; font-size: 34px; letter-spacing: -.035em; line-height: 1.15; }
-    .role { margin: 0; color: var(--muted); font-size: 18px; font-weight: 700; }
-    .contact { display: flex; flex-wrap: wrap; gap: 5px 16px; margin: 16px 0 0; padding: 0; list-style: none; }
-    .contact li { overflow-wrap: anywhere; }
-    section { margin-top: 24px; }
-    h2 { margin: 0 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line); font-size: 17px; letter-spacing: .04em; text-transform: uppercase; }
-    h3 { margin: 0; font-size: 15px; }
-    p { margin: 5px 0 0; }
-    .summary { font-size: 15px; }
-    .skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; }
-    .skills p { margin-top: 3px; }
-    .entry { break-inside: avoid; margin: 0 0 15px; }
-    .entry-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
-    .date { flex: 0 0 auto; color: var(--muted); font-size: 13px; }
-    .context { color: var(--muted); font-size: 13px; }
-    .case { break-inside: avoid; margin: 0 0 13px; }
-    .case p { margin-top: 3px; }
-    .label { color: var(--ink); font-weight: 700; }
-    .fine-print { color: var(--muted); font-size: 12px; }
-    @media (max-width: 700px) {
-      main { width: 100%; margin: 0; padding: 28px 20px; }
-      .skills { grid-template-columns: 1fr; }
-      .entry-head { display: block; }
-      h1 { font-size: 29px; }
+    body { margin: 0; background: #e8ece8; color: var(--ink); font: 10.2pt/1.43 Arial, Helvetica, sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    .actions { display: flex; justify-content: center; gap: 10px; padding: 16px; }
+    .actions button, .actions a { border: 0; border-radius: 6px; background: var(--navy); color: #fff; cursor: pointer; font: 700 14px Arial, sans-serif; padding: 10px 16px; text-decoration: none; }
+    .actions a { background: var(--lime-strong); color: var(--navy); }
+    .sheet { width: min(940px, calc(100% - 32px)); margin: 0 auto 30px; background: var(--paper); box-shadow: 0 16px 48px #0d294622; }
+    .masthead { display: grid; grid-template-columns: minmax(0, 1fr) 145px 230px; gap: 22px; align-items: center; padding: 28px 34px 24px; background: var(--lime); }
+    .identity { min-width: 0; }
+    .surname { margin: 0; color: var(--navy); font-size: clamp(32px, 5vw, 48px); font-weight: 800; letter-spacing: .045em; line-height: .96; }
+    .given-name { margin: 5px 0 0; color: var(--navy); font-size: 19px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .rule { width: min(100%, 300px); height: 2px; margin: 15px 0 12px; background: #264b684a; }
+    .headline { max-width: 420px; margin: 0; color: var(--navy); font-size: 16px; font-weight: 800; letter-spacing: .045em; line-height: 1.3; text-transform: uppercase; }
+    .portrait { width: 140px; aspect-ratio: 1; border: 4px solid var(--navy); border-radius: 50%; background: #d7e2e4; object-fit: cover; object-position: center 38%; }
+    .intro { margin: 0; color: #25384a; font-size: 9.2pt; line-height: 1.45; }
+    .contact-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 9px 18px; padding: 13px 34px; background: var(--navy); color: white; font-size: 9pt; font-weight: 600; }
+    .contact-bar a { overflow-wrap: anywhere; }
+    .contact-item { display: inline-flex; align-items: center; gap: 8px; }
+    .contact-item span { color: var(--lime-strong); }
+    .layout { display: grid; grid-template-columns: minmax(205px, .34fr) minmax(0, .66fr); gap: 30px; padding: 24px 34px 34px; }
+    section { margin: 0 0 23px; }
+    h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; color: var(--navy); font-size: 14pt; font-weight: 800; letter-spacing: .04em; line-height: 1.15; text-transform: uppercase; }
+    h2::after { height: 2px; flex: 1; background: var(--lime-strong); content: ""; }
+    h3 { margin: 0; color: var(--navy); font-size: 10.4pt; line-height: 1.25; }
+    p { margin: 4px 0 0; }
+    .credential { margin: 0 0 11px; }
+    .credential p, .muted, .project-meta { color: var(--muted); font-size: 9pt; }
+    .credential strong { color: var(--navy); }
+    .skill-list, .language-list { margin: 0; padding-left: 17px; }
+    .skill-list li, .language-list li { margin: 0 0 4px; }
+    .cert-list { margin: 0; padding: 0; list-style: none; }
+    .cert-list li { margin: 0 0 8px; color: var(--muted); font-size: 8.7pt; }
+    .cert-list strong { color: var(--navy); }
+    .entry { margin: 0 0 18px; break-inside: avoid; }
+    .entry-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+    .date { flex: 0 0 auto; color: var(--navy-light); font-size: 8.5pt; font-weight: 700; text-transform: uppercase; }
+    .entry p { color: var(--muted); }
+    .entry ul { margin: 7px 0 0; padding-left: 17px; }
+    .entry li { margin: 0 0 4px; }
+    .project { padding: 0 0 12px; margin-bottom: 12px; border-bottom: 1px solid var(--line); break-inside: avoid; }
+    .project:last-child { border-bottom: 0; }
+    .project p { color: var(--muted); }
+    .label { color: var(--navy); font-weight: 700; }
+    .metric { display: inline-block; margin: 3px 4px 0 0; padding: 4px 8px; border-radius: 999px; background: #eff8df; color: var(--navy); font-size: 8.2pt; font-weight: 700; }
+    @media (max-width: 740px) {
+      .masthead { grid-template-columns: minmax(0, 1fr) 108px; gap: 12px; padding: 22px 20px; }
+      .portrait { width: 104px; grid-column: 2; grid-row: 1; }
+      .identity { grid-column: 1; grid-row: 1; }
+      .intro { grid-column: 1 / -1; }
+      .contact-bar { padding-inline: 20px; }
+      .layout { grid-template-columns: 1fr; gap: 0; padding: 22px 20px; }
     }
     @media print {
-      @page { size: A4; margin: 14mm 15mm; }
-      body { background: #fff; font-size: 10pt; line-height: 1.4; }
-      main { width: auto; margin: 0; padding: 0; box-shadow: none; }
+      @page { size: A4; margin: 0; }
+      body { background: white; font-size: 9pt; line-height: 1.35; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
       .actions { display: none; }
-      a { color: inherit; text-decoration: none; }
-      section { margin-top: 16px; }
-      h2 { font-size: 12pt; }
+      .sheet { width: 210mm; min-height: 297mm; margin: 0; box-shadow: none; }
+      .masthead { grid-template-columns: minmax(0, 1fr) 34mm 57mm; gap: 5mm; padding: 8mm 9mm 6mm; }
+      .surname { font-size: 30pt; }
+      .given-name { font-size: 12pt; }
+      .headline { font-size: 10pt; }
+      .portrait { width: 33mm; }
+      .intro { font-size: 7.5pt; }
+      .contact-bar { gap: 2mm 4mm; padding: 3.2mm 9mm; font-size: 7.5pt; }
+      .layout { grid-template-columns: 62mm 1fr; gap: 7mm; padding: 6mm 9mm 8mm; }
+      section { margin-bottom: 5mm; }
+      h2 { margin-bottom: 3mm; font-size: 11pt; }
+      h3 { font-size: 8.5pt; }
+      .credential { margin-bottom: 3mm; }
+      .credential p, .muted, .project-meta { font-size: 7.3pt; }
+      .cert-list li { font-size: 7pt; }
+      .entry { margin-bottom: 4mm; }
+      .entry li { margin-bottom: 1mm; }
+      .project { padding-bottom: 2.5mm; margin-bottom: 2.5mm; }
+      .project p { font-size: 7.4pt; }
     }
   </style>
 </head>
@@ -87,101 +101,122 @@
     <button type="button" onclick="window.print()">Imprimer / enregistrer en PDF</button>
     <a href="index.html">Voir le portfolio</a>
   </div>
-  <main>
-    <header>
-      <div class="eyebrow">Curriculum vitæ · Côte d’Ivoire · Opportunités internationales</div>
-      <h1>GODOME KOFFI</h1>
-      <p class="role">Jean-David · Développeur Full Stack · Ingénieur IA générative · Automatisation</p>
-      <ul class="contact">
-        <li>Grand-Bassam, Côte d’Ivoire</li>
-        <li><a href="mailto:jeandavidgod@gmail.com">jeandavidgod@gmail.com</a></li>
-        <li><a href="https://wa.me/2250143585192">+225 01 43 58 51 92</a></li>
-        <li><a href="https://wa.me/2250586542686">+225 05 86 54 26 86</a></li>
-        <li><a href="https://www.linkedin.com/in/koffi-godome-b4041531a/">LinkedIn · Koffi Godome</a></li>
-        <li><a href="https://github.com/JDG-TECH1">GitHub · JDG-TECH1</a></li>
-        <li><a href="index.html">Portfolio</a></li>
-      </ul>
-    </header>
-
-    <section>
-      <h2>Résumé professionnel</h2>
-      <p class="summary">Développeur diplômé en développement d’applications et services, je réalise des applications web et des outils métier avec JavaScript, Node.js, Express et PHP. Depuis 2021, mes missions couvrent le développement freelance, l’intégration d’IA générative, l’automatisation via n8n et WhatsApp Business, ainsi que la coordination de projets numériques.</p>
-    </section>
-
-    <section>
-      <h2>Compétences techniques</h2>
-      <div class="skills">
-        <div><h3>Frontend</h3><p>HTML, CSS, JavaScript, TypeScript, React, Next.js</p></div>
-        <div><h3>Backend</h3><p>Node.js, Express.js, PHP</p></div>
-        <div><h3>Bases de données</h3><p>MySQL, SQL Server, PostgreSQL, Supabase</p></div>
-        <div><h3>IA générative</h3><p>OpenAI, Claude, OpenRouter, agents IA, prompt engineering, Claude Code</p></div>
-        <div><h3>Automatisation</h3><p>n8n, WhatsApp Business API, workflows intelligents</p></div>
-        <div><h3>Cloud, déploiement et outils</h3><p>Azure, Vercel, GitHub, Git</p></div>
-        <div><h3>Produit et pilotage</h3><p>Analyse de besoins, gestion de projet, coordination d’équipe, documentation, accompagnement utilisateur</p></div>
-        <div><h3>Autres compétences</h3><p>Marketing digital, campagnes Meta Ads, création graphique avec Canva, Microsoft Word et Excel</p></div>
+  <main class="sheet">
+    <header class="masthead">
+      <div class="identity">
+        <p class="surname">GODOMÉ</p>
+        <p class="given-name">K. Jean-David</p>
+        <div class="rule"></div>
+        <p class="headline">Développeur Full Stack<br>Ingénieur IA générative</p>
       </div>
-    </section>
-
-    <section>
-      <h2>Expériences professionnelles</h2>
-      <article class="entry">
-        <div class="entry-head"><h3>Développeur d’applications — DEV-TECH</h3><span class="date">Novembre 2025 – présent</span></div>
-        <p class="context">Stage · Applications web, facturation électronique et IA</p>
-        <p><span class="label">Contributions :</span> Développement de fonctionnalités applicatives; intégration FNE et génération de QR codes pour une solution de facturation électronique; participation aux projets d’automatisation et d’agents IA.</p>
-      </article>
-      <article class="entry">
-        <div class="entry-head"><h3>Développeur freelance — projets clients et TEADIS</h3><span class="date">Depuis 2021</span></div>
-        <p class="context">Côte d’Ivoire · Développement, automatisation et formation</p>
-        <p><span class="label">Réalisations :</span> Sites et applications web, agents IA, workflows automatisés, contenus visuels et campagnes sur les réseaux sociaux; formation et accompagnement d’utilisateurs.</p>
-      </article>
-      <article class="entry">
-        <div class="entry-head"><h3>Conducteur de projet numérique — Mairie de Bonoua</h3><span class="date">Février 2026 – présent</span></div>
-        <p class="context">Projet d’équipe · Portail de services municipaux</p>
-        <p><span class="label">Rôle :</span> Coordination de la création du portail, recueil des besoins fonctionnels et suivi des contributions de l’équipe. Projet en cours.</p>
-      </article>
-      <article class="entry">
-        <div class="entry-head"><h3>Projet de cartographie GeoJSON — DEV-TECH</h3><span class="date">Juin 2024</span></div>
-        <p class="context">Cartographie de parcelles de plantations de cacao · Côte d’Ivoire</p>
-        <p><span class="label">Contribution :</span> Traitement et représentation cartographique de données agricoles au format GeoJSON.</p>
-      </article>
-    </section>
-
-    <section>
-      <h2>Projets sélectionnés</h2>
-      <article class="case"><h3>TEADIS_AI — agent IA d’analyse de données</h3><p><span class="label">Problème :</span> Rendre les données métier plus accessibles aux utilisateurs. <span class="label">Solution :</span> Agent développé en autonomie pour interroger des données en langage naturel et produire des restitutions structurées et visuelles, avec prise en charge annoncée de 15 langues. <span class="label">Technologies :</span> IA générative, agent conversationnel, analyse de données. <span class="label">Résultat :</span> Exploration et restitution de données via une interface en langage naturel.</p></article>
-      <article class="case"><h3>Agent IA commercial WhatsApp</h3><p><span class="label">Problème :</span> Répondre plus efficacement aux demandes commerciales récurrentes. <span class="label">Solution :</span> Workflow conversationnel connecté à une base de connaissances et à WhatsApp Business. <span class="label">Technologies :</span> n8n, WhatsApp Business API, agent IA. <span class="label">Résultat :</span> Automatisation du traitement initial des demandes commerciales.</p></article>
-      <article class="case"><h3>Facturation-FNE</h3><p><span class="label">Besoin :</span> Numériser la facturation d’un groupe agricole multi-filières. <span class="label">Réalisation :</span> Application avec intégration FNE, QR codes et suivi des retours. <span class="label">Technologies :</span> Node.js, Express.js, intégration FNE. <span class="label">Client :</span> Groupe ivoirien des filières café, cacao, anacarde et autres productions.</p></article>
-      <article class="case"><h3>Portail numérique — Mairie de Bonoua</h3><p><span class="label">Problème :</span> Faciliter l’accès aux services et informations municipaux. <span class="label">Solution :</span> Portail pour les démarches citoyennes, le suivi des demandes et la gestion des contenus publics. <span class="label">Technologies :</span> PHP, MySQL. <span class="label">Résultat :</span> Projet de portail centralisé actuellement en développement.</p></article>
-      <article class="case"><h3>AccompaDom — plateforme d’accompagnement scolaire</h3><p><span class="label">Problème :</span> Structurer la mise en relation entre apprenants et accompagnateurs. <span class="label">Solution :</span> Contribution à une plateforme avec espaces de compte et parcours d’inscription. <span class="label">Technologies :</span> Plateforme web. <span class="label">Résultat :</span> Parcours numérique dédié à l’accompagnement scolaire.</p></article>
-      <article class="case"><h3>Jarvis Starter Kit — TEADIS</h3><p><span class="label">Problème :</span> Aider à personnaliser un assistant de développement selon le contexte de son utilisateur. <span class="label">Solution :</span> Kit guidé intégrant contexte utilisateur, commandes dédiées et veille personnalisée. <span class="label">Technologies :</span> Claude Code, ingénierie de prompts. <span class="label">Résultat :</span> Base réutilisable pour configurer un assistant personnel.</p></article>
-      <article class="case"><h3>Formulaire d’inscription à la formation Claude Code — TEADIS</h3><p><span class="label">Problème :</span> Simplifier le recueil d’informations après inscription à une formation. <span class="label">Solution :</span> Page statique ouvrant WhatsApp avec un message prérempli. <span class="label">Technologies :</span> HTML, formulaire web, lien WhatsApp. <span class="label">Résultat :</span> Transmission simplifiée; le formulaire ne traite pas de paiement et ne stocke aucune donnée sur un serveur.</p></article>
-      <article class="case"><h3>Plateforme de formation TEADIS</h3><p><span class="label">Problème :</span> Présenter des parcours de formation numérique aux apprenants. <span class="label">Solution :</span> Site de formation en ligne de la marque TEADIS. <span class="label">Technologies :</span> Plateforme web; dépôt GitHub disponible. <span class="label">Résultat :</span> Présence en ligne pour les formations et ressources numériques.</p></article>
-      <article class="case"><h3>TEADIS AI Marketing Assistant</h3><p><span class="label">Problème :</span> Regrouper des tâches de gestion marketing et de vente de formations. <span class="label">Solution :</span> Socle SaaS avec tableau de bord, génération de contenus enregistrés en brouillon, analyse assistée de messages et workflows de préparation de contenus et rapports. <span class="label">Technologies :</span> Next.js, TypeScript, Supabase, OpenRouter, n8n. <span class="label">Résultat :</span> Base fonctionnelle; connexions sociales et publication automatique à intégrer via les API officielles.</p></article>
-      <article class="case"><h3>Cartographie de plantations — GeoJSON</h3><p><span class="label">Besoin :</span> Visualiser des parcelles agricoles géolocalisées. <span class="label">Réalisation :</span> Cartographie des données de plantations. <span class="label">Technologies :</span> GeoJSON, cartographie de données. <span class="label">Client :</span> Groupe agricole ivoirien.</p></article>
-      <article class="case"><h3>Résidence Executive 50-52 — site web multilingue</h3><p><span class="label">Problème :</span> Présenter l’offre d’un hôtel à Abidjan et faciliter les demandes de réservation. <span class="label">Solution :</span> Site multilingue avec présentation des chambres, demandes de réservation, espace client et tableau de bord d’administration. <span class="label">Technologies :</span> Application web. <span class="label">Résultat :</span> Parcours numérique disponible en ligne.</p></article>
-    </section>
-
-    <section>
-      <h2>Résultats marketing vérifiés</h2>
-      <p>Trois promotions Meta Ads suivies ont généré 436 conversations initiées pour 63,29 USD de dépenses. La cliente a rapporté des ventes importantes, jusqu’à une rupture de stock. Les conversations ne constituent pas une mesure de ventes attribuées; données agrégées et anonymisées de l’Espace Pubs.</p>
-    </section>
-
-    <section>
-      <h2>Certifications et formation continue</h2>
-      <p>11 certificats de formation continue : marketing digital (3), intelligence artificielle (3), réseaux sociaux (2), Internet et informatique (1), développement (2).</p>
-      <p>Préparation à l’examen Microsoft Azure Administrator (AZ-104) en cours.</p>
-    </section>
-
-    <section>
-      <h2>Formation</h2>
-      <article class="entry"><div class="entry-head"><h3>Licence professionnelle — Développement d’applications et services</h3><span class="date">2025–2026</span></div><p class="context">Université Virtuelle de Côte d’Ivoire</p></article>
-      <article class="entry"><div class="entry-head"><h3>Baccalauréat série D</h3></div><p class="context">Lycée Zooti · Togo</p></article>
-    </section>
-
-    <section>
-      <h2>Langues</h2>
-      <p>Français : courant. Anglais : niveau débutant; anglais technique en développement.</p>
-    </section>
+      <img class="portrait" src="portfolio-assets/jean-david-godome.png" alt="Portrait de GODOME KOFFI (Jean-David)">
+      <p class="intro">Développeur d’applications et de services, je conçois des outils web métier, intègre l’IA générative et automatise des processus. Je coordonne aussi des projets numériques et accompagne les utilisateurs, de l’analyse du besoin à la mise en œuvre.</p>
+    </header>
+    <div class="contact-bar">
+      <a class="contact-item" href="tel:+2250586542686"><span aria-hidden="true">☎</span> +225 05 86 54 26 86</a>
+      <a class="contact-item" href="mailto:jeandavidgod@gmail.com"><span aria-hidden="true">✉</span> jeandavidgod@gmail.com</a>
+      <span class="contact-item"><span aria-hidden="true">⌖</span> Grand-Bassam, Côte d’Ivoire</span>
+      <a class="contact-item" href="https://www.linkedin.com/in/koffi-godome-b4041531a/"><span aria-hidden="true">in</span> LinkedIn</a>
+      <a class="contact-item" href="https://github.com/JDG-TECH1"><span aria-hidden="true">⌘</span> GitHub · JDG-TECH1</a>
+    </div>
+    <div class="layout">
+      <aside>
+        <section>
+          <h2>Formation</h2>
+          <article class="credential">
+            <h3>Licence professionnelle</h3>
+            <p><strong>Développement d’applications et services</strong><br>Université Virtuelle de Côte d’Ivoire · 2025–2026</p>
+          </article>
+          <article class="credential">
+            <h3>Baccalauréat série D</h3>
+            <p>Lycée Zooti · Togo</p>
+          </article>
+        </section>
+        <section>
+          <h2>Certifications</h2>
+          <ul class="cert-list">
+            <li><strong>11 certificats de formation :</strong> intelligence artificielle (3), développement (2), marketing digital (3), réseaux sociaux (2), informatique (1).</li>
+            <li>Préparation à l’examen Microsoft Azure Administrator (AZ-104).</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Compétences</h2>
+          <ul class="skill-list">
+            <li><strong>Frontend :</strong> HTML, CSS, JavaScript, TypeScript, React, Next.js</li>
+            <li><strong>Backend :</strong> Node.js, Express.js, PHP</li>
+            <li><strong>Données :</strong> MySQL, SQL Server, PostgreSQL, Supabase</li>
+            <li><strong>IA :</strong> OpenAI, Claude, OpenRouter, agents IA, prompt engineering</li>
+            <li><strong>Automatisation :</strong> n8n, WhatsApp Business API, workflows</li>
+            <li><strong>Cloud &amp; outils :</strong> Azure, Vercel, GitHub, Git</li>
+            <li><strong>Gestion :</strong> analyse de besoins, coordination de projet, formation utilisateur</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Langues</h2>
+          <ul class="language-list">
+            <li>Français : courant</li>
+            <li>Anglais : débutant · vocabulaire technique en développement</li>
+          </ul>
+        </section>
+      </aside>
+      <div>
+        <section>
+          <h2>Expérience professionnelle</h2>
+          <article class="entry">
+            <div class="entry-head"><h3>Développeur d’applications · DEV-TECH</h3><span class="date">Nov. 2025 – présent</span></div>
+            <p class="muted">Stage · Applications web, facturation électronique et IA</p>
+            <ul>
+              <li>Développement de fonctionnalités applicatives et intégration de données métier.</li>
+              <li>Contribution à une solution de facturation électronique : intégration FNE et génération de QR codes.</li>
+              <li>Participation à des projets d’automatisation et d’agents IA.</li>
+            </ul>
+          </article>
+          <article class="entry">
+            <div class="entry-head"><h3>Développeur freelance · clients &amp; TEADIS</h3><span class="date">Depuis 2021</span></div>
+            <p class="muted">Côte d’Ivoire · Développement, automatisation et formation</p>
+            <ul>
+              <li>Création de sites et d’applications web, d’agents IA et de workflows automatisés.</li>
+              <li>Conception de contenus visuels, gestion de pages et campagnes sur les réseaux sociaux.</li>
+              <li>Formation et accompagnement d’utilisateurs sur des outils numériques.</li>
+            </ul>
+          </article>
+          <article class="entry">
+            <div class="entry-head"><h3>Conducteur de projet numérique · Mairie de Bonoua</h3><span class="date">Fév. 2026 – présent</span></div>
+            <p class="muted">Projet d’équipe · Portail de services municipaux</p>
+            <ul><li>Coordination du projet, recueil des besoins et suivi des contributions de l’équipe. Projet en cours.</li></ul>
+          </article>
+          <article class="entry">
+            <div class="entry-head"><h3>Projet cartographique GeoJSON · DEV-TECH</h3><span class="date">Juin 2024</span></div>
+            <p class="muted">Parcelles de plantations de cacao · Côte d’Ivoire</p>
+            <ul><li>Traitement et représentation cartographique de données agricoles au format GeoJSON.</li></ul>
+          </article>
+        </section>
+        <section>
+          <h2>Projets sélectionnés</h2>
+          <article class="project">
+            <h3>TEADIS_AI · Agent IA d’analyse de données</h3>
+            <p><span class="label">Réalisation :</span> questions en langage naturel et restitutions structurées et visuelles. <span class="label">Particularité :</span> prise en charge de 15 langues.</p>
+          </article>
+          <article class="project">
+            <h3>Agent IA commercial WhatsApp</h3>
+            <p><span class="label">Réalisation :</span> workflow n8n reliant un agent conversationnel, une base de connaissances et WhatsApp Business.</p>
+          </article>
+          <article class="project">
+            <h3>Facturation-FNE</h3>
+            <p><span class="label">Réalisation :</span> application Node.js / Express avec intégration FNE, génération de QR codes et suivi des retours.</p>
+          </article>
+          <article class="project">
+            <h3>TEADIS AI Marketing Assistant</h3>
+            <p><span class="label">Stack :</span> Next.js, TypeScript, Supabase, OpenRouter, n8n. Tableau de bord, génération de brouillons et analyse assistée de messages.</p>
+          </article>
+          <article class="project">
+            <h3>Résultats de campagnes Meta Ads</h3>
+            <p>436 conversations initiées sur trois promotions pour 63,29 USD de dépenses. La cliente a rapporté des ventes ayant conduit à une rupture de stock.</p>
+            <span class="metric">436 conversations</span><span class="metric">63,29 USD investis</span>
+          </article>
+        </section>
+      </div>
+    </div>
   </main>
 </body>
 </html>

@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="GODOME KOFFI (Jean-David), développeur Full Stack, ingénieur IA générative et consultant en automatisation. Découvrez ses projets web, agents IA et solutions métier.">
   <meta name="author" content="GODOME KOFFI (Jean-David)">
-  <meta name="theme-color" content="#020617">
+  <meta name="theme-color" content="#0d2946">
+  <link rel="canonical" href="https://godome-portfolio-cv.vercel.app/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="fr_FR">
+  <meta property="og:url" content="https://godome-portfolio-cv.vercel.app/">
   <meta property="og:title" content="GODOME KOFFI (Jean-David) — Développeur Full Stack & IA">
   <meta property="og:description" content="Je conçois des logiciels, agents IA et systèmes d’automatisation qui transforment les idées en solutions utiles.">
-  <meta property="og:image" content="portfolio-assets/teadis-ai-bi.svg">
+  <meta property="og:image" content="https://godome-portfolio-cv.vercel.app/portfolio-assets/jean-david-godome.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="GODOME KOFFI (Jean-David) — Développeur Full Stack & IA">
   <meta name="twitter:description" content="Logiciels, agents IA et automatisations conçus pour résoudre des problèmes métier.">
@@ -183,6 +185,91 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
     }
+  :root {
+    color-scheme: light;
+    --bg: #f5f7f1;
+    --panel: #fff;
+    --panel-2: #eef4e4;
+    --ink: #102b49;
+    --muted: #59697a;
+    --blue: #173a5d;
+    --cyan: #78a943;
+    --line: #dce4d5;
+  }
+  body { background: var(--bg); color: var(--ink); }
+  body::before { display: none; }
+  .nav-shell { border-color: var(--line); background: #f8faf5ed; }
+  .brand { color: var(--ink); }
+  .brand-mark { border-color: #173a5d; background: var(--navy, #0d2946); color: #e4ffb5; }
+  .nav-links a { color: #526174; }
+  .nav-links a:hover, .nav-links a:focus-visible { color: var(--ink); }
+  .nav-links .nav-cta { border-color: #173a5d; color: var(--ink); }
+  .hero {
+    width: 100%;
+    grid-template-columns: minmax(0, 1.2fr) minmax(230px, .8fr);
+    align-items: center;
+    padding-inline: max(calc((100vw - var(--max)) / 2), 22px);
+    background: #e4ffb5;
+  }
+  .hero-copy { z-index: 1; grid-column: 1; grid-row: 1; }
+  .hero-orb { display: none; }
+  .kicker { color: #294a33; }
+  .status-dot { background: #5d8c2f; box-shadow: 0 0 12px #78a94366; }
+  .gradient-text { background: none; color: #0d2946; -webkit-text-fill-color: currentColor; }
+  .hero p { color: #3e5264; }
+  .hero-portrait {
+    z-index: 1;
+    display: grid;
+    width: min(100%, 300px);
+    aspect-ratio: 1;
+    justify-self: center;
+    grid-column: 2;
+    grid-row: 1;
+    overflow: hidden;
+    place-items: center;
+    border: 5px solid #0d2946;
+    border-radius: 50%;
+    background: #d0dade;
+    box-shadow: 0 22px 50px #0d294629;
+  }
+  .hero-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; }
+  .button { border-color: #173a5d45; background: #ffffff8c; color: var(--ink); }
+  .button:hover { border-color: #173a5d; background: white; }
+  .button-primary { border-color: var(--blue); background: var(--blue); color: white; box-shadow: 0 9px 24px #173a5d30; }
+  .button-primary:hover { border-color: #0d2946; background: #0d2946; }
+  .hero-note { color: #43586b; }
+  section { border-color: var(--line); }
+  .eyebrow { color: #5d812e; }
+  .section-intro, .about-copy p { color: #59697a; }
+  .about-card, .skill-card, .project, .cert { border-color: var(--line); background: white; box-shadow: 0 9px 28px #102b490a; }
+  .about-card { background: linear-gradient(145deg, #f1f8e7, #fff); }
+  .focus-list, .skill-card p, .project p, .cert p, .timeline p { color: #59697a; }
+  .skill-icon { border-color: #8eb75d55; background: #eaf5d9; color: #466c25; }
+  .project:hover { border-color: #89ae5f; }
+  .project-media { background: #eef3e8; }
+  .project h3, .timeline h3, .cert h3 { color: var(--ink); }
+  .project p b { color: var(--ink); }
+  .project-link, .timeline time { color: #476d27; }
+  .tag { border-color: #dbe5d1; background: #f4f8ef; color: #394f36; }
+  .result { border-color: var(--line); color: #405268 !important; }
+  .timeline::before { background: linear-gradient(#78a943, #78a94355, transparent); }
+  .timeline-item::before { border-color: #78a943; background: #f5f7f1; }
+  .cert-number { color: #638f32; }
+  .cert-pending { border-color: #b6d38d; background: #f3f8e9; }
+  .proof { border-color: #d2e3b6; background: linear-gradient(120deg, #eaf5d9, #fff 80%); }
+  .proof-stat { color: var(--ink); }
+  .proof-stat span, .proof p { color: #506174; }
+  .contact-links a { color: #173a5d; }
+  label { color: var(--ink); }
+  input, textarea { border-color: #d3ddce; background: white; color: var(--ink); }
+  input:focus, textarea:focus { border-color: #78a943; box-shadow: 0 0 0 3px #78a94322; }
+  footer { border-color: var(--line); }
+  .footer-row a, .footer-row { color: #526174; }
+  @media (max-width: 650px) {
+    .hero { grid-template-columns: 1fr; gap: 30px; min-height: auto; padding-block: 46px; }
+    .hero-copy { grid-column: 1; grid-row: 2; }
+    .hero-portrait { width: 168px; grid-column: 1; grid-row: 1; }
+  }
   </style>
 </head>
 <body>
@@ -198,6 +285,7 @@
   <main id="contenu">
     <header class="hero wrap" id="accueil">
       <div class="hero-orb" aria-hidden="true"></div>
+      <div class="hero-portrait"><img src="portfolio-assets/jean-david-godome.png" alt="Portrait de GODOME KOFFI (Jean-David)"></div>
       <div class="hero-copy">
         <div class="kicker"><span class="status-dot" aria-hidden="true"></span> Basé à Grand-Bassam, Côte d’Ivoire</div>
         <h1><span class="gradient-text">Développeur Full Stack &amp;<br>Ingénieur IA Générative</span></h1>
