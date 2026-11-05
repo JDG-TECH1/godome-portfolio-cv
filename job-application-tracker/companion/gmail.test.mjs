@@ -14,6 +14,7 @@ test("Gmail OAuth uses PKCE and requires one explicit confirmation per send", { 
     if (url.pathname === "/token" && url.hostname === "oauth2.googleapis.com") {
       const form = new URLSearchParams(options.body);
       assert.equal(form.get("code_verifier")?.length, 64);
+      assert.equal(form.has("client_secret"), false);
       return Response.json({ access_token: "mock-access-token", refresh_token: "mock-refresh-token", expires_in: 3600, scope: "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send" });
     }
     if (url.pathname === "/revoke") return new Response(null, { status: 200 });
@@ -45,7 +46,7 @@ test("Gmail OAuth uses PKCE and requires one explicit confirmation per send", { 
   let callbackUrl = "";
   try {
     await service.load();
-    await service.configure({ clientId: "test.apps.googleusercontent.com", clientSecret: "client-secret-for-tests" });
+    await service.configure({ clientId: "test.apps.googleusercontent.com" });
     const authorization = new URL(await service.startAuthorization());
     assert.equal(authorization.searchParams.get("code_challenge_method"), "S256");
     const redirect = new URL(authorization.searchParams.get("redirect_uri"));

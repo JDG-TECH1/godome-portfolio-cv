@@ -119,7 +119,7 @@ export class GmailService {
 
   status() {
     return {
-      configured: Boolean(this.#data?.clientId && this.#data?.clientSecret),
+      configured: Boolean(this.#data?.clientId),
       connected: Boolean(this.#data?.tokens?.refresh_token),
       email: this.#data?.email || "",
       monitorEnabled: Boolean(this.#data?.monitorEnabled),
@@ -133,7 +133,7 @@ export class GmailService {
     const clientId = String(input.clientId || "").trim();
     const clientSecret = String(input.clientSecret || "").trim();
     if (!clientId.endsWith(".apps.googleusercontent.com") || clientId.length > 300) throw new Error("L'identifiant doit être celui d'un client OAuth Google Desktop valide.");
-    if (clientSecret.length < 8 || clientSecret.length > 300) throw new Error("Le secret OAuth semble invalide.");
+    if (clientSecret && (clientSecret.length < 8 || clientSecret.length > 300)) throw new Error("Le secret OAuth semble invalide.");
     if (this.#data?.tokens?.refresh_token) {
       const result = await this.disconnect();
       if (!result.revoked) throw new Error(`L'ancien accès Google n'a pas pu être révoqué. Jetons locaux effacés; vérifie ton compte Google. ${result.message || ""}`.trim());
@@ -144,7 +144,7 @@ export class GmailService {
   }
 
   async startAuthorization() {
-    if (!this.#data?.clientId || !this.#data?.clientSecret) throw new Error("Configure d'abord l'identifiant et le secret du client OAuth Desktop.");
+    if (!this.#data?.clientId) throw new Error("Configure d'abord l'identifiant du client OAuth Desktop.");
     if (this.#oauth) throw new Error("Une autorisation Google est déjà en cours.");
     const state = randomUrlSafe();
     const verifier = randomUrlSafe(48);
@@ -190,17 +190,18 @@ export class GmailService {
       try {
         const code = requestUrl.searchParams.get("code");
         if (!code) throw new Error("Google n'a pas retourné de code d'autorisation.");
+        const tokenRequest = {
+          client_id: this.#oauth.clientId,
+          code,
+          code_verifier: this.#oauth.verifier,
+          grant_type: "authorization_code",
+          redirect_uri: redirectUri,
+        };
+        if (this.#oauth.clientSecret) tokenRequest.client_secret = this.#oauth.clientSecret;
         const tokens = await fetchJson("https://oauth2.googleapis.com/token", {
           method: "POST",
           headers: { "content-type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams({
-            client_id: this.#oauth.clientId,
-            client_secret: this.#oauth.clientSecret,
-            code,
-            code_verifier: this.#oauth.verifier,
-            grant_type: "authorization_code",
-            redirect_uri: redirectUri,
-          }),
+          body: new URLSearchParams(tokenRequest),
         }, this.#fetch);
         if (!tokens.refresh_token) throw new Error("Google n'a pas fourni de jeton de renouvellement. Retire l'accès existant dans Google puis reconnecte le compte.");
         this.#data.tokens = { ...tokens, expires_at: Date.now() + Number(tokens.expires_in || 3600) * 1000 };
@@ -263,15 +264,16 @@ export class GmailService {
   async #accessToken() {
     if (!this.#data?.tokens?.refresh_token) throw new Error("Connecte d'abord Gmail avec OAuth.");
     if (this.#data.tokens.access_token && Number(this.#data.tokens.expires_at) > Date.now() + 60_000) return this.#data.tokens.access_token;
+    const refreshRequest = {
+      client_id: this.#data.clientId,
+      refresh_token: this.#data.tokens.refresh_token,
+      grant_type: "refresh_token",
+    };
+    if (this.#data.clientSecret) refreshRequest.client_secret = this.#data.clientSecret;
     const refreshed = await fetchJson("https://oauth2.googleapis.com/token", {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        client_id: this.#data.clientId,
-        client_secret: this.#data.clientSecret,
-        refresh_token: this.#data.tokens.refresh_token,
-        grant_type: "refresh_token",
-      }),
+      body: new URLSearchParams(refreshRequest),
     }, this.#fetch);
     this.#data.tokens = {
       ...this.#data.tokens,

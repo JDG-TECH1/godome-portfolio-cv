@@ -49,10 +49,10 @@
         <div><p class="eyebrow">Surveillance des réponses</p><h2>Connexion Gmail sécurisée</h2></div>
         <span id="gmail-status" class="badge">Non connecté</span>
       </div>
-      <p class="fineprint">Dans <a href="https://console.cloud.google.com/auth/clients" target="_blank" rel="noopener noreferrer">Google Cloud OAuth Clients</a>, crée un client « Desktop app », active l'API Gmail et ajoute ton compte comme utilisateur test si l'application est en mode Test. Les portées demandées sont la lecture des messages et l'envoi d'un message unique après confirmation. Google peut afficher un avertissement d'application non vérifiée à cause de ces portées sensibles/restreintes. Les jetons et le secret OAuth sont chiffrés avec DPAPI dans ton compte Windows.</p>
+      <p class="fineprint">Le client « Application de bureau » EmploiIA et la Gmail API sont configurés dans Google Cloud; le compte de test doit aussi être ajouté. Les portées demandées sont la lecture des messages et l'envoi d'un message unique après confirmation. Google peut afficher un avertissement d'application non vérifiée à cause de ces portées sensibles/restreintes. Le client Desktop peut fonctionner sans secret; si tu en as un, le compagnon le protège avec DPAPI dans ton compte Windows.</p>
       <form id="gmail-config-form" class="form-grid">
         <label class="field"><span>Identifiant client OAuth Desktop</span><input name="clientId" required maxlength="300" autocomplete="off" placeholder="…apps.googleusercontent.com"></label>
-        <label class="field"><span>Secret client OAuth (jamais partagé)</span><input name="clientSecret" type="password" required maxlength="300" autocomplete="new-password"></label>
+        <label class="field"><span>Secret client OAuth (facultatif)</span><input name="clientSecret" type="password" maxlength="300" autocomplete="new-password"></label>
         <button class="button button-outline" type="submit">Enregistrer la configuration OAuth</button>
       </form>
       <div id="gmail-configured" class="fineprint hidden">Client OAuth configuré. La valeur secrète n'est pas réaffichée. <button id="gmail-change-config" class="text-button" type="button">Remplacer la configuration</button></div>
