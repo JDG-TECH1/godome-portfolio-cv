@@ -209,7 +209,7 @@ function renderProfileEditor() {
 function renderOfferForm() {
   return `
     <form id="offer-form" class="offer-form hidden">
-      <h3>Nouvelle offre</h3>
+      <h3>Nouvelle piste</h3>
       <div class="form-grid">
         ${field("company", "Entreprise", "", { required: true })}
         ${field("title", "Intitulé du poste", "", { required: true })}
@@ -219,13 +219,70 @@ function renderOfferForm() {
         ${field("job_type", "Type de contrat")}
         ${field("salary", "Salaire annoncé")}
         ${field("deadline", "Date limite", "", { type: "date" })}
-        ${field("fit_score", "Adéquation estimée (%)", "", { type: "number", placeholder: "0 à 100" })}
+        ${field("fit_score", "Adéquation estimée (%)", "", { type: "number", placeholder: "Calcul automatique si vide" })}
         <label class="field" for="offer-status"><span>Statut</span><select id="offer-status" name="status"><option>À examiner</option><option>À préparer</option><option>Prête à envoyer</option></select></label>
-        ${field("notes", "Notes", "", { rows: 3 })}
+        ${field("notes", "Description de l’offre et notes", "", { rows: 5, hint: "Colle la description ici pour une estimation plus pertinente." })}
       </div>
+      <p id="fit-preview" class="fit-preview" aria-live="polite">Ajoute le titre, le lieu et la description pour voir une estimation expliquée.</p>
       <p id="offer-message" class="message" role="status"></p>
       <div class="form-actions"><button class="button button-primary" type="submit">Enregistrer l’offre</button><button id="cancel-add" class="button button-outline" type="button">Annuler</button></div>
     </form>`;
+}
+
+function normalizeText(value = "") {
+  return String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().replace(/[^a-z0-9+#.]+/g, " ").trim();
+}
+
+function containsTerm(text, term) {
+  const normalizedText = ` ${normalizeText(text)} `;
+  const normalizedTerm = normalizeText(term);
+  return Boolean(normalizedTerm) && normalizedText.includes(` ${normalizedTerm} `);
+}
+
+function scoreOffer(offer) {
+  const title = normalizeText(offer.title);
+  const evidence = normalizeText(`${offer.title || ""} ${offer.notes || ""}`);
+  const roles = String(profile?.target_roles || "").split(",").map((role) => normalizeText(role)).filter(Boolean);
+  const skills = String(profile?.skills || "").split(",").map((skill) => normalizeText(skill)).filter((skill) => skill.length > 1);
+  const roleCoverage = roles.map((role) => {
+    if (title.includes(role)) return 1;
+    const words = role.split(/\s+/).filter((word) => word.length > 1);
+    return words.length ? words.filter((word) => containsTerm(title, word)).length / words.length : 0;
+  });
+  const bestRoleCoverage = Math.max(0, ...roleCoverage);
+  const roleScore = Math.round(45 * bestRoleCoverage);
+  const matchedSkills = skills.filter((skill) => containsTerm(evidence, skill));
+  const skillScore = skills.length ? Math.round(40 * matchedSkills.length / skills.length) : 0;
+  const desiredLocations = String(profile?.target_locations || "").split(",").map(normalizeText).filter(Boolean);
+  const jobLocation = normalizeText(offer.location);
+  const remoteMatch = /remote|teletravail|a distance/.test(jobLocation) && /remote|teletravail|distance/.test(normalizeText(profile?.work_preferences));
+  const locationMatch = jobLocation && desiredLocations.some((desired) => desired.includes(jobLocation) || jobLocation.includes(desired));
+  const locationScore = locationMatch || remoteMatch ? 15 : jobLocation ? 0 : 8;
+  const locationReason = locationMatch ? "lieu dans tes préférences" : remoteMatch ? "télétravail compatible" : jobLocation ? "lieu hors de tes préférences" : "lieu à vérifier";
+  const bestRoleIndex = roleCoverage.indexOf(bestRoleCoverage);
+  return {
+    score: Math.min(100, roleScore + skillScore + locationScore),
+    roleScore,
+    skillScore,
+    locationScore,
+    matchedRole: roles[bestRoleIndex] || "",
+    matchedSkills,
+    locationReason,
+  };
+}
+
+function renderFitPreview() {
+  const form = document.querySelector("#offer-form");
+  if (!form) return;
+  const values = new FormData(form);
+  const result = scoreOffer({
+    title: String(values.get("title") || ""),
+    location: String(values.get("location") || ""),
+    notes: String(values.get("notes") || ""),
+  });
+  const role = result.matchedRole ? `métier ${result.roleScore}/45` : "métier à vérifier";
+  const skills = result.matchedSkills.length ? `${result.matchedSkills.join(", ")} (${result.skillScore}/40)` : `compétences à vérifier (${result.skillScore}/40)`;
+  document.querySelector("#fit-preview").textContent = `Estimation indicative : ${result.score}/100 · ${role} · ${skills} · ${result.locationReason} (${result.locationScore}/15). Vérifie les critères obligatoires toi-même.`;
 }
 
 function renderAssistant() {
@@ -238,7 +295,7 @@ function renderAssistant() {
           <h2>Des pistes ciblées, à vérifier avant d’agir.</h2>
           <p>Choisis un métier et un pays pour ouvrir des recherches sur des plateformes publiques.</p>
         </div>
-        <div class="monthly-goal"><strong id="month-count">0</strong><span>/ 200 candidatures ce mois-ci</span></div>
+        <div class="monthly-goal"><strong id="month-count">0</strong><span>/ 200 candidatures ce mois-ci</span><progress id="month-progress" max="200" value="0" aria-label="Progression de l’objectif mensuel"></progress></div>
       </div>
       <form id="agent-search-form" class="agent-search-form">
         ${field("agent_role", "Métier ou service recherché", firstRole, { required: true, placeholder: "Développeur Full Stack" })}
@@ -253,6 +310,7 @@ function renderAssistant() {
           <p>Génère un brouillon à relire et personnaliser avant tout envoi.</p>
           ${field("draft_company", "Entreprise", "", { required: true })}
           ${field("draft_title", "Poste", "", { required: true })}
+          ${field("draft_description", "Description de l’offre", "", { rows: 4, hint: "Le brouillon ne mettra en avant que les compétences déjà inscrites dans ton profil." })}
           <button class="button button-outline" type="submit">Créer mon brouillon</button>
           <textarea id="job-draft-output" class="draft-output hidden" rows="8" readonly aria-label="Brouillon de candidature"></textarea>
           <button class="button button-outline copy-draft hidden" data-copy="job-draft-output" type="button">Copier le brouillon</button>
@@ -287,12 +345,17 @@ function searchLinks(role, locationName, mode) {
       google("upwork.com", "Rechercher sur Upwork"),
       google("linkedin.com/services", "Rechercher des clients LinkedIn"),
       google("comeup.com", "Rechercher sur ComeUp"),
+      google("fiverr.com", "Rechercher sur Fiverr"),
       generalSearch("Recherche web générale"),
     ];
   }
   const links = [
     { label: "Rechercher sur LinkedIn", url: `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(role)}&location=${encodeURIComponent(locationName)}` },
     google("linkedin.com/jobs", "Autres offres LinkedIn"),
+    google("greenhouse.io", "Carrières (Greenhouse)"),
+    google("jobs.lever.co", "Carrières (Lever)"),
+    google("ashbyhq.com", "Carrières (Ashby)"),
+    google("workdayjobs.com", "Carrières (Workday)"),
   ];
   const worldwide = /monde|world|international/i.test(locationName);
   if (worldwide || /canada/i.test(locationName)) {
@@ -309,12 +372,18 @@ function searchLinks(role, locationName, mode) {
   return links;
 }
 
-function buildJobDraft(company, title) {
+function buildJobDraft(company, title, description = "") {
   const name = profile?.full_name || "Candidat";
-  const skillList = (profile?.skills || "").split(",").map((skill) => skill.trim()).filter(Boolean).slice(0, 6).join(", ");
+  const skills = (profile?.skills || "").split(",").map((skill) => skill.trim()).filter(Boolean);
+  const jobText = normalizeText(`${title} ${description}`);
+  const relevantSkills = skills.filter((skill) => containsTerm(jobText, skill)).slice(0, 6);
+  const skillList = (relevantSkills.length ? relevantSkills : skills.slice(0, 6)).join(", ");
   const portfolio = profile?.portfolio_url ? `Mon portfolio : ${profile.portfolio_url}` : "";
   const cv = profile?.cv_url ? `Vous pouvez également consulter mon CV : ${profile.cv_url}` : "";
-  return `Objet : Candidature au poste de ${title}\n\nMadame, Monsieur,\n\nJe vous adresse ma candidature pour le poste de ${title} au sein de ${company}. Développeur Full Stack, je conçois et réalise des applications adaptées aux besoins métier, de l’analyse jusqu’au déploiement.\n\nMon expérience m’a permis de travailler avec ${skillList || "des technologies web et des bases de données modernes"}, ainsi que sur l’intégration d’API et de solutions d’intelligence artificielle générative. Méthodique et autonome, je veille à proposer des solutions fiables et maintenables.\n\nJe serais heureux d’échanger avec vous sur les besoins de votre équipe et sur la manière dont je pourrais y contribuer.\n\n${portfolio}\n${cv}\n\nCordialement,\n${name}`;
+  const skillSentence = relevantSkills.length
+    ? `Les compétences de mon profil qui recoupent votre annonce incluent ${skillList}.`
+    : `Mon profil comprend notamment ${skillList || "des technologies de développement logiciel"}, ainsi que l’intégration d’API et de solutions d’intelligence artificielle générative.`;
+  return `Objet : Candidature au poste de ${title}\n\nMadame, Monsieur,\n\nJe vous adresse ma candidature pour le poste de ${title} au sein de ${company}. Développeur Full Stack, je conçois et réalise des applications adaptées aux besoins métier, de l’analyse jusqu’au déploiement.\n\n${skillSentence} Méthodique et autonome, je veille à proposer des solutions fiables et maintenables. Je serais heureux d’échanger avec vous sur les priorités du poste et sur la manière dont je pourrais y contribuer.\n\n${portfolio}\n${cv}\n\nCordialement,\n${name}`;
 }
 
 function buildClientDraft(company, need) {
@@ -330,6 +399,10 @@ function renderOfferList() {
     const text = `${offer.company} ${offer.title} ${offer.location || ""} ${offer.source || ""}`.toLocaleLowerCase();
     return text.includes(search) && (!statusFilter || offer.status === statusFilter);
   });
+  const sortBy = document.querySelector("#sort-filter").value;
+  if (sortBy === "fit") filtered.sort((a, b) => (b.fit_score ?? -1) - (a.fit_score ?? -1));
+  else if (sortBy === "deadline") filtered.sort((a, b) => (a.deadline || "9999-12-31").localeCompare(b.deadline || "9999-12-31"));
+  else filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   const container = document.querySelector("#offers");
   container.innerHTML = filtered.map((offer) => {
     const facts = [
@@ -338,7 +411,7 @@ function renderOfferList() {
       offer.salary && `Salaire : ${offer.salary}`,
       offer.source && `Source : ${offer.source}`,
       offer.deadline && `Échéance : ${offer.deadline}`,
-      offer.fit_score !== null && `Adéquation : ${offer.fit_score}%`,
+      offer.fit_score !== null && `Adéquation indicative : ${offer.fit_score}%`,
       offer.applied_at && `Envoyée le : ${dateTime(offer.applied_at)}`,
     ].filter(Boolean);
     return `<article class="offer-card">
@@ -375,6 +448,7 @@ async function loadOffers() {
   }).length;
   document.querySelector("#hero-month-count").textContent = monthCount;
   document.querySelector("#month-count").textContent = monthCount;
+  document.querySelector("#month-progress").value = Math.min(monthCount, 200);
   renderOfferList();
 }
 
@@ -398,7 +472,7 @@ async function loadDashboard() {
       ${renderAssistant()}
       <div class="toolbar"><div><h2>Mes offres</h2><p class="muted">L’heure d’envoi est enregistrée quand tu marques la candidature comme envoyée.</p></div><button id="add-toggle" class="button button-primary" type="button">+ Ajouter une offre</button></div>
       ${renderOfferForm()}
-      <div class="filters"><input id="search" type="search" placeholder="Rechercher une entreprise ou un poste"><select id="status-filter"><option value="">Tous les statuts</option>${statuses.map((status) => `<option>${esc(status)}</option>`).join("")}</select></div>
+      <div class="filters"><input id="search" type="search" placeholder="Rechercher une entreprise ou un poste"><select id="status-filter"><option value="">Tous les statuts</option>${statuses.map((status) => `<option>${esc(status)}</option>`).join("")}</select><select id="sort-filter" aria-label="Trier les offres"><option value="recent">Plus récentes</option><option value="fit">Meilleure adéquation</option><option value="deadline">Échéance la plus proche</option></select><button id="export-offers" class="button button-outline" type="button">Exporter mes offres</button></div>
       <div id="offers" class="offers"></div><div id="empty" class="empty hidden">Aucune offre pour le moment. Ajoute une annonce pour commencer ton suivi.</div>
       <p class="safety-note">Les identifiants des sites d’emploi ne sont pas conservés. Le système prépare et suit tes candidatures, mais tu confirmes toi-même chaque envoi.</p>
     </main>
@@ -424,7 +498,10 @@ async function loadDashboard() {
   document.querySelector("#cancel-add").addEventListener("click", () => document.querySelector("#offer-form").classList.add("hidden"));
   document.querySelector("#search").addEventListener("input", renderOfferList);
   document.querySelector("#status-filter").addEventListener("change", renderOfferList);
+  document.querySelector("#sort-filter").addEventListener("change", renderOfferList);
+  document.querySelector("#export-offers").addEventListener("click", exportOffers);
   document.querySelector("#offer-form").addEventListener("submit", addOffer);
+  document.querySelector("#offer-form").addEventListener("input", renderFitPreview);
   document.querySelector("#offers").addEventListener("change", updateStatus);
   document.querySelector("#offers").addEventListener("click", deleteOffer);
   document.querySelector("#agent-search-form").addEventListener("submit", prepareSearches);
@@ -445,7 +522,7 @@ function prepareJobDraft(event) {
   event.preventDefault();
   const form = new FormData(event.currentTarget);
   const output = document.querySelector("#job-draft-output");
-  output.value = buildJobDraft(String(form.get("draft_company") || "").trim(), String(form.get("draft_title") || "").trim());
+  output.value = buildJobDraft(String(form.get("draft_company") || "").trim(), String(form.get("draft_title") || "").trim(), String(form.get("draft_description") || ""));
   output.classList.remove("hidden");
   event.currentTarget.querySelector(".copy-draft").classList.remove("hidden");
 }
@@ -457,6 +534,25 @@ function prepareClientDraft(event) {
   output.value = buildClientDraft(String(form.get("client_name") || "").trim(), String(form.get("client_need") || "").trim());
   output.classList.remove("hidden");
   event.currentTarget.querySelector(".copy-draft").classList.remove("hidden");
+}
+
+function canonicalOfferUrl(value) {
+  const url = new URL(value);
+  if (!["http:", "https:"].includes(url.protocol)) throw new Error("Le lien de l’offre doit commencer par http:// ou https://.");
+  url.hash = "";
+  url.pathname = url.pathname.replace(/\/+$/, "") || "/";
+  return url.href;
+}
+
+function exportOffers() {
+  const exportData = offers.map(({ user_id, ...offer }) => offer);
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+  const downloadUrl = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = downloadUrl;
+  link.download = `mes-offres-${localDate()}.json`;
+  link.click();
+  URL.revokeObjectURL(downloadUrl);
 }
 
 async function copyDraft(event) {
@@ -475,9 +571,24 @@ async function addOffer(event) {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
   const offer = Object.fromEntries(formData.entries());
-  offer.fit_score = offer.fit_score ? Number(offer.fit_score) : null;
+  const fitEstimate = scoreOffer(offer).score;
+  offer.fit_score = offer.fit_score ? Number(offer.fit_score) : fitEstimate;
   offer.deadline = offer.deadline || null;
   if (!offer.company || !offer.title || !offer.url) return showError("#offer-message", "Entreprise, poste et lien sont obligatoires.");
+  if (!Number.isInteger(offer.fit_score) || offer.fit_score < 0 || offer.fit_score > 100) return showError("#offer-message", "L’adéquation doit être un nombre entier entre 0 et 100.");
+  let canonicalUrl;
+  try {
+    canonicalUrl = canonicalOfferUrl(offer.url);
+  } catch (error) {
+    return showError("#offer-message", error.message);
+  }
+  let duplicate;
+  try {
+    duplicate = offers.some((existing) => canonicalOfferUrl(existing.url) === canonicalUrl);
+  } catch {
+    return showError("#offer-message", "Une offre enregistrée contient un lien invalide. Corrige ou supprime cette offre avant d’en ajouter une autre.");
+  }
+  if (duplicate) return showError("#offer-message", "Cette adresse figure déjà dans tes offres.");
   const { error } = await supabase.from("offers").insert(offer);
   if (error) return showError("#offer-message", error.message);
   event.currentTarget.reset();
@@ -492,7 +603,7 @@ async function updateStatus(event) {
   const current = offers.find((offer) => String(offer.id) === String(id));
   const appliedAt = status === "Envoyée" ? (current?.status === "Envoyée" ? current.applied_at : new Date().toISOString()) : null;
   const { error } = await supabase.from("offers").update({ status, applied_at: appliedAt, updated_at: new Date().toISOString() }).eq("id", id);
-  if (error) showError("#offer-message", error.message);
+  if (error) return showError("#offer-message", error.message);
   await loadOffers();
 }
 
