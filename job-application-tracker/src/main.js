@@ -293,11 +293,16 @@ function searchLinks(role, locationName, mode) {
   const links = [
     { label: "Rechercher sur LinkedIn", url: `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(role)}&location=${encodeURIComponent(locationName)}` },
     google("linkedin.com/jobs", "Autres offres LinkedIn"),
-    google("jobbank.gc.ca", "Offres au Canada (Job Bank)"),
-    google("hellowork.com", "Offres en France (HelloWork)"),
-    google("francetravail.fr", "Offres en France (France Travail)"),
   ];
-  if (/côte d.?ivoire|cote d.?ivoire|abidjan|monde|world/i.test(locationName)) {
+  const worldwide = /monde|world|international/i.test(locationName);
+  if (worldwide || /canada/i.test(locationName)) {
+    links.push(google("jobbank.gc.ca", "Offres au Canada (Job Bank)"));
+  }
+  if (worldwide || /france/i.test(locationName)) {
+    links.push(google("hellowork.com", "Offres en France (HelloWork)"));
+    links.push(google("francetravail.fr", "Offres en France (France Travail)"));
+  }
+  if (worldwide || /côte d.?ivoire|cote d.?ivoire|abidjan/i.test(locationName)) {
     links.push(google("emploi.ci", "Offres en Côte d’Ivoire"));
   }
   links.push(generalSearch("Recherche web générale"));
@@ -315,7 +320,7 @@ function buildJobDraft(company, title) {
 function buildClientDraft(company, need) {
   const name = profile?.full_name || "Jean-David GODOME";
   const skills = (profile?.skills || "").split(",").map((skill) => skill.trim()).filter(Boolean).slice(0, 6).join(", ");
-  return `Bonjour,\n\nJ’ai découvert votre besoin concernant « ${need} » et souhaiterais vous proposer mon aide. Je suis ${name}, développeur Full Stack et concepteur de solutions numériques. Je peux vous accompagner sur l’analyse du besoin, la réalisation et la mise en production d’une solution adaptée.\n\nMes compétences couvrent notamment ${skills || "le développement d’applications web"}, l’intégration d’API et l’automatisation. Je serais ravi d’en apprendre davantage sur vos objectifs et vos contraintes afin de vous proposer une approche pertinente, sans engagement.\n\nVous pouvez découvrir mon travail ici : ${profile?.portfolio_url || "portfolio disponible sur demande"}.\n\nSeriez-vous disponible pour un court échange ?\n\nBien cordialement,\n${name}`;
+  return `Bonjour ${company},\n\nJ’ai découvert votre besoin concernant « ${need} » et souhaiterais vous proposer mon aide. Je suis ${name}, développeur Full Stack et concepteur de solutions numériques. Je peux vous accompagner sur l’analyse du besoin, la réalisation et la mise en production d’une solution adaptée.\n\nMes compétences couvrent notamment ${skills || "le développement d’applications web"}, l’intégration d’API et l’automatisation. Je serais ravi d’en apprendre davantage sur vos objectifs et vos contraintes afin de vous proposer une approche pertinente, sans engagement.\n\nVous pouvez découvrir mon travail ici : ${profile?.portfolio_url || "portfolio disponible sur demande"}.\n\nSeriez-vous disponible pour un court échange ?\n\nBien cordialement,\n${name}`;
 }
 
 function renderOfferList() {
