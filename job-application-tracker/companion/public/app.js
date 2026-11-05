@@ -144,13 +144,13 @@ function renderOffers(offers) {
     const aiDraftButton = document.createElement("button");
     aiDraftButton.className = "button button-outline";
     aiDraftButton.type = "button";
-    aiDraftButton.textContent = "Rédiger avec l'IA locale";
+    aiDraftButton.textContent = "Rédiger avec l'IA";
     aiDraftButton.disabled = !currentState.ai.available;
     aiDraftButton.title = currentState.ai.available ? "Le texte reste sur cet ordinateur." : currentState.ai.message;
     aiDraftButton.addEventListener("click", async () => {
       try {
         await api(`/api/offers/${offer.id}/ai-draft`, { model: $("#ai-model").value });
-        message("Brouillon IA locale créé. Relis-le et vérifie chaque affirmation.");
+        message("Brouillon IA créé. Relis-le et vérifie chaque affirmation.");
         await refresh();
       } catch (error) {
         message(error.message, true);
@@ -180,7 +180,7 @@ function renderConversation(messages) {
   for (const message of messages) {
     const bubble = document.createElement("article");
     bubble.className = `chat-message ${message.role === "assistant" ? "assistant" : "user"}`;
-    addText(bubble, "strong", "", message.role === "assistant" ? "Assistant local" : "Toi");
+    addText(bubble, "strong", "", message.role === "assistant" ? `Assistant · ${message.provider || "IA"}` : "Toi");
     addText(bubble, "p", "", message.content);
     container.append(bubble);
   }
@@ -254,6 +254,7 @@ function render(state) {
   $("#data-directory").textContent = state.dataDirectory;
   $("#ai-message").textContent = state.ai.message;
   const modelSelect = $("#ai-model");
+  $("#ai-model-control").classList.toggle("hidden", state.ai.models.length === 0);
   const selectedModel = modelSelect.value;
   modelSelect.replaceChildren();
   for (const model of state.ai.models) {
@@ -324,16 +325,16 @@ $("#chat-form").addEventListener("submit", async (event) => {
   const content = String(new FormData(formElement).get("message") || "").trim();
   const sendButton = $("#send-chat");
   sendButton.disabled = true;
-  sendButton.textContent = "Réflexion locale…";
+  sendButton.textContent = "Réflexion…";
   try {
-    await api("/api/chat", { message: content, model: $("#ai-model").value });
+    const result = await api("/api/chat", { message: content, model: $("#ai-model").value });
     formElement.reset();
-    message("Réponse locale reçue. Vérifie les conseils et les faits.");
+    message(`Réponse reçue via ${result.provider}. Vérifie les conseils et les faits.`);
     await refresh();
   } catch (error) {
     message(error.message, true);
   } finally {
-    sendButton.textContent = "Envoyer à l'IA locale";
+    sendButton.textContent = "Envoyer à l'IA";
     sendButton.disabled = !currentState.ai.available;
   }
 });

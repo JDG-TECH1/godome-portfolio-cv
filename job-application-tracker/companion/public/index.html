@@ -41,7 +41,7 @@
         <article class="permission"><strong id="gmail-permission-title">Gmail</strong><span id="gmail-permission-detail">Non connecté · aucun e-mail n'est lu ni envoyé.</span></article>
         <article class="permission"><strong>Envoi de candidatures</strong><span>Confirmation manuelle · aucun formulaire n'est soumis.</span></article>
       </div>
-      <p class="fineprint">Tes mots de passe Google et des sites d'emploi ne sont jamais demandés ni enregistrés par ce compagnon. L'état Gmail est indiqué ci-dessous. L'IA locale nécessite Ollama et un modèle installé sur cet ordinateur.</p>
+      <p class="fineprint">Tes mots de passe Google et des sites d'emploi ne sont jamais demandés ni enregistrés par ce compagnon. L'état Gmail est indiqué ci-dessous. Ollama reste prioritaire; si son modèle est indisponible, l'IA peut utiliser OpenAI si une clé est configurée. Dans ce cas, les messages, le profil et les descriptions d'offres utilisés dans le prompt quittent cet ordinateur. La clé doit être fournie dans la variable d'environnement OPENAI_API_KEY et n'est pas intégrée à l'application.</p>
     </section>
 
     <section class="panel" id="gmail-panel">
@@ -112,22 +112,22 @@
         <label class="field full"><span>Description de l'offre</span><textarea name="description" rows="4" maxlength="12000"></textarea></label>
         <button class="button button-primary" type="submit">Enregistrer cette offre</button>
       </form>
-      <p class="fineprint">Le score est une heuristique locale non-IA. Les brouillons sont à relire; les offres et descriptions restent sur cet ordinateur.</p>
-      <div class="ai-status"><strong>IA locale (Ollama)</strong><span id="ai-message">Vérification…</span><label class="field"><span>Modèle local</span><select id="ai-model" aria-label="Modèle IA local"></select></label></div>
+      <p class="fineprint">Le score est une heuristique locale non-IA. Les brouillons sont à relire. Avec le secours OpenAI, les données des prompts sont transmises à OpenAI (stockage désactivé pour la requête); sinon, elles restent sur cet ordinateur.</p>
+      <div class="ai-status"><strong>Fournisseur IA</strong><span id="ai-message">Vérification…</span><label id="ai-model-control" class="field"><span>Modèle Ollama</span><select id="ai-model" aria-label="Modèle IA local"></select></label></div>
       <div id="offers" class="stack"></div>
     </section>
 
     <section class="panel">
       <div class="section-heading">
-        <div><p class="eyebrow">Mémoire conversationnelle privée</p><h2>Parler avec l'assistant local</h2></div>
+        <div><p class="eyebrow">Mémoire conversationnelle locale</p><h2>Parler avec l'assistant IA</h2></div>
         <button id="clear-chat" class="button button-outline" type="button">Effacer la conversation</button>
       </div>
       <div id="conversation" class="conversation" aria-live="polite"></div>
       <form id="chat-form" class="chat-form">
         <label class="field"><span>Question ou consigne de rédaction</span><textarea name="message" rows="3" maxlength="2000" required placeholder="Ex. Aide-moi à comparer ces deux offres freelance…"></textarea></label>
-        <button id="send-chat" class="button button-primary" type="submit">Envoyer à l'IA locale</button>
+        <button id="send-chat" class="button button-primary" type="submit">Envoyer à l'IA</button>
       </form>
-      <p class="fineprint">La mémoire est stockée sur cet ordinateur et envoyée uniquement au modèle Ollama local quand tu l'utilises. L'assistant peut conseiller ou rédiger; il n'a aucun outil pour envoyer des candidatures ou des e-mails.</p>
+      <p class="fineprint">La mémoire reste sur cet ordinateur; les messages sont transmis au fournisseur IA actif (Ollama local ou OpenAI en secours). L'assistant peut conseiller ou rédiger; il n'a aucun outil pour envoyer des candidatures ou des e-mails.</p>
     </section>
 
     <section class="panel">
