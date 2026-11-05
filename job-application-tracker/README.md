@@ -60,7 +60,7 @@ Le compagnon est un programme Node.js local, distinct du site Vercel. Il écoute
 1. Installe Node.js LTS si nécessaire.
 2. Double-clique sur `companion/Demarrer-Compagnon.bat`, ou lance `npm.cmd run companion` depuis ce dossier.
 3. Ouvre `http://127.0.0.1:8788` dans ton navigateur.
-4. Le profil de recherche est enregistré dans `%LOCALAPPDATA%\EmploiIA\Companion\state.json`. Il ne contient pas de mot de passe ni de jeton Gmail.
+4. Le profil de recherche est enregistré dans `%LOCALAPPDATA%\EmploiIA\Companion\state.json`. Les identifiants OAuth Gmail et ses jetons sont conservés séparément dans `gmail.dpapi`, chiffrés pour le compte Windows courant.
 
 ### Ce qu'il fait actuellement
 
@@ -68,13 +68,25 @@ Le compagnon est un programme Node.js local, distinct du site Vercel. Il écoute
 - Enregistre les offres que tu saisis, calcule une adéquation heuristique explicable, suit leur statut et prépare un brouillon local.
 - Peut utiliser un modèle **Ollama déjà installé et démarré localement** pour créer un brouillon IA. Les requêtes sont envoyées uniquement au service Ollama de cet ordinateur (`127.0.0.1:11434`); le compagnon n'installe pas de modèle et n'envoie pas de contenu à un fournisseur cloud. Le modèle est détecté dans le tableau de bord.
 - Avec Ollama disponible, le chat conserve jusqu'à 20 échanges récents (40 messages) pour donner du contexte. La conversation peut être effacée séparément. Sans modèle local disponible, le compagnon affiche l'état et désactive le chat IA.
+- Gmail peut lire les métadonnées et extraits des 10 derniers messages pertinents de la boîte de réception (recherche limitée aux 30 derniers jours), à la demande ou toutes les 15 minutes si la surveillance est activée. Il peut préparer un e-mail; l'envoi exige une confirmation distincte, un seul destinataire et une limite d'un envoi par 30 secondes.
 - Écrit un journal local des recherches planifiées, modifications de profil, offres et brouillons. Le bouton « Effacer les données du compagnon » demande une confirmation et met la planification en pause.
 - La planification fonctionne uniquement tant que le compagnon reste ouvert. Pour le lancer à chaque ouverture de session Windows, exécute `companion/Activer-Demarrage-Windows.ps1` et confirme la demande. Pour révoquer ce démarrage automatique, exécute `companion/Desactiver-Demarrage-Windows.ps1`. Ces scripts n'utilisent pas les droits administrateur.
 
+### Configurer Gmail (facultatif)
+
+1. Dans [Google Cloud Console](https://console.cloud.google.com/), crée un projet, active **Gmail API**, puis configure l'écran de consentement OAuth. Si l'audience est en mode **Test**, ajoute ton adresse Google comme utilisateur test.
+2. Crée un identifiant OAuth de type **Desktop app** dans [Clients OAuth](https://console.cloud.google.com/auth/clients). Ne crée pas de client Web ni de redirection Vercel : le compagnon utilise un callback local temporaire sur `127.0.0.1`.
+3. Dans le compagnon, colle l'identifiant et le secret du client Desktop, puis choisis **Connecter mon compte Google** et accepte les autorisations demandées dans la fenêtre Google.
+4. La lecture se fait uniquement après connexion. Active la surveillance explicitement; désactive-la ou choisis **Révoquer et déconnecter Gmail** pour arrêter l'accès. L'effacement de toutes les données locales tente aussi de révoquer l'accès Google.
+
+Le compagnon demande les portées `gmail.readonly` et `gmail.send`. Google les classe respectivement comme restreinte et sensible; un avertissement « application non vérifiée » ou des limites de test peuvent s'appliquer. Pour un usage personnel, reste en mode test et autorise uniquement ton propre compte. Les jetons et le secret OAuth sont protégés par DPAPI dans le compte Windows courant, et ne sont pas envoyés à Vercel/Supabase. Les messages synchronisés ne comprennent que l'expéditeur, l'objet, la date et un extrait limité. Pour retirer l'accès, utilise aussi [les connexions tierces du compte Google](https://myaccount.google.com/connections). Voir les [exigences de vérification des portées OAuth](https://developers.google.com/identity/protocols/oauth2/production-readiness/sensitive-scope-verification).
+
+Le flux Gmail simulé est vérifié sous Windows avec `npm.cmd test`; ce test ne réalise pas de connexion réelle à Google et n'envoie aucun e-mail réel.
+
 ### Autorisations et limites actuelles
 
-- **Aucune candidature ni aucun message n'est envoyé automatiquement.** Le compagnon prépare des recherches et des brouillons; relis-les et envoie-les toi-même sur la plateforme.
-- Gmail, la lecture de la boîte de réception, le contrôle d'autres fenêtres et l'automatisation de formulaires ne sont pas implémentés. Aucun mot de passe de site tiers n'est demandé. N'active pas ces accès en donnant tes identifiants au programme.
+- **Aucune candidature ni aucun e-mail n'est envoyé automatiquement.** Les candidatures sont préparées pour que tu les vérifies et les soumettes toi-même. L'envoi Gmail exige toujours la confirmation explicite de l'e-mail affiché. Aucun mot de passe Google ou de site tiers n'est demandé.
+- Le contrôle d'autres fenêtres et l'automatisation de formulaires ne sont pas implémentés. Le compagnon ne crée pas de compte tiers et ne postule pas tout seul.
 - Le générateur sans Ollama repose sur des règles simples, pas sur un modèle d'IA. Les correspondances et brouillons sont indicatifs; vérifie chaque affirmation.
 - Ce compagnon ne synchronise pas ses données avec Supabase et ne réveille pas un PC en veille. Arrête-le en fermant sa fenêtre terminal ou en appuyant sur `Ctrl+C`.
-- La mémoire locale (profil, offres, journal et conversation) est un fichier du profil Windows. Efface la conversation ou toutes les données depuis l'interface; sinon, arrête le compagnon puis supprime uniquement le fichier `state.json` indiqué par le tableau de bord.
+- La mémoire locale (profil, offres, journal et conversation) est un fichier du profil Windows. Efface la conversation ou toutes les données depuis l'interface; sinon, arrête le compagnon puis supprime uniquement les fichiers du dossier `EmploiIA\Companion`. Pour supprimer Gmail aussi, utilise d'abord le bouton de révocation ou l'effacement des données.

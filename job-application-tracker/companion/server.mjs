@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
+import { GmailService } from "./gmail.mjs";
 
 const PORT = Number(process.env.EMPLOIIA_COMPANION_PORT || 8788);
 const HOST = "127.0.0.1";
@@ -12,6 +13,7 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = join(ROOT, "public");
 const DATA_DIR = join(process.env.LOCALAPPDATA || join(homedir(), "AppData", "Local"), "EmploiIA", "Companion");
 const DATA_FILE = join(DATA_DIR, "state.json");
+const GMAIL_FILE = join(DATA_DIR, "gmail.dpapi");
 const MAX_BODY_BYTES = 32_000;
 const MAX_LOG_ENTRIES = 200;
 const MAX_HISTORY = 40;
@@ -39,12 +41,15 @@ function initialState() {
     batches: [],
     audit: [],
     conversation: [],
+    gmailMonitorError: "",
     lastScheduledRuns: [],
   };
 }
 
 let state = initialState();
 let persistQueue = Promise.resolve();
+let gmailScanInProgress = false;
+const gmail = new GmailService({ filePath: GMAIL_FILE, appUrl: BASE_URL });
 
 function audit(action, details = "") {
   state.audit.unshift({ id: randomUUID(), at: new Date().toISOString(), action, details });
@@ -304,6 +309,31 @@ function validateProfile(input) {
   return { fullName, roles, skills, locations, portfolioUrl: String(input.portfolioUrl || "").trim(), cvUrl: String(input.cvUrl || "").trim() };
 }
 
+async function scanGmail({ manual = false } = {}) {
+  if (gmailScanInProgress) throw new Error("Une vérification Gmail est déjà en cours.");
+  gmailScanInProgress = true;
+  const knownIds = new Set(gmail.status().messages.map((message) => message.id));
+  try {
+    const result = await gmail.scanRecentMessages();
+    const newMessages = result.messages.filter((message) => !knownIds.has(message.id));
+    state.gmailMonitorError = "";
+    if (manual || newMessages.length) {
+      audit(manual ? "Boîte Gmail vérifiée" : "Nouveaux messages Gmail détectés", `${newMessages.length} message(s) lié(s) à la recherche d'emploi`);
+      await persistState();
+    }
+    return { ...result, newMessages, newCount: newMessages.length };
+  } catch (error) {
+    state.gmailMonitorError = error.message;
+    if (!manual) {
+      audit("Erreur de surveillance Gmail", error.message);
+      await persistState();
+    }
+    throw error;
+  } finally {
+    gmailScanInProgress = false;
+  }
+}
+
 async function handleApi(request, response, pathname) {
   if (request.method === "GET" && pathname === "/api/state") {
     const ai = await localAiStatus();
@@ -316,10 +346,13 @@ async function handleApi(request, response, pathname) {
       audit: state.audit,
       conversation: state.conversation,
       ai,
+      gmail: { ...gmail.status(), monitorError: state.gmailMonitorError },
       capabilities: {
         localSchedule: true,
         publicSearchPlanning: true,
-        gmail: false,
+        gmail: gmail.status().connected,
+        gmailRead: gmail.status().connected,
+        emailSend: gmail.status().connected,
         browserAutomation: false,
         automaticSubmission: false,
         aiProviderConfigured: ai.available,
@@ -378,6 +411,59 @@ async function handleApi(request, response, pathname) {
     await persistState();
     return sendJson(response, 200, { cleared: true });
   }
+  if (request.method === "POST" && pathname === "/api/gmail/configure") {
+    const result = await gmail.configure(await readJson(request));
+    state.gmailMonitorError = "";
+    audit("Client OAuth Gmail configuré localement");
+    await persistState();
+    return sendJson(response, 200, { gmail: result });
+  }
+  if (request.method === "POST" && pathname === "/api/gmail/connect") {
+    const authorizationUrl = await gmail.startAuthorization();
+    audit("Connexion OAuth Gmail demandée");
+    await persistState();
+    return sendJson(response, 200, { authorizationUrl });
+  }
+  if (request.method === "POST" && pathname === "/api/gmail/disconnect") {
+    const result = await gmail.disconnect();
+    state.gmailMonitorError = "";
+    audit(result.revoked ? "Accès Gmail révoqué" : "Jetons Gmail locaux effacés", result.revoked ? "" : result.message || "Révocation distante à vérifier dans les paramètres Google.");
+    await persistState();
+    return sendJson(response, 200, { ...result, gmail: gmail.status() });
+  }
+  if (request.method === "POST" && pathname === "/api/gmail/monitor") {
+    const body = await readJson(request);
+    const result = await gmail.setMonitoring(Boolean(body.enabled));
+    state.gmailMonitorError = "";
+    audit(result.monitorEnabled ? "Surveillance Gmail activée" : "Surveillance Gmail désactivée");
+    await persistState();
+    let scanError = "";
+    if (result.monitorEnabled) {
+      try {
+        await scanGmail();
+      } catch (error) {
+        scanError = error.message;
+      }
+    }
+    return sendJson(response, 200, { gmail: { ...gmail.status(), monitorError: state.gmailMonitorError }, scanError });
+  }
+  if (request.method === "POST" && pathname === "/api/gmail/scan") {
+    return sendJson(response, 200, await scanGmail({ manual: true }));
+  }
+  if (request.method === "POST" && pathname === "/api/gmail/send/prepare") {
+    const pending = gmail.prepareSend(await readJson(request));
+    audit("E-mail préparé pour validation", "Envoi bloqué jusqu'à une confirmation explicite.");
+    await persistState();
+    return sendJson(response, 201, { pending });
+  }
+  if (request.method === "POST" && pathname === "/api/gmail/send/confirm") {
+    const body = await readJson(request);
+    if (body.confirmed !== true) return sendJson(response, 400, { error: "Confirmation explicite requise." });
+    const result = await gmail.confirmSend(String(body.id || ""));
+    audit("E-mail envoyé après confirmation explicite", `${result.to} · ${result.subject}`);
+    await persistState();
+    return sendJson(response, 200, { sent: true, to: result.to, subject: result.subject });
+  }
   if (request.method === "POST" && pathname === "/api/offers") {
     const body = await readJson(request);
     const company = String(body.company || "").trim();
@@ -434,11 +520,12 @@ async function handleApi(request, response, pathname) {
   if (request.method === "POST" && pathname === "/api/data/clear") {
     const body = await readJson(request);
     if (body.confirm !== "SUPPRIMER MES DONNÉES LOCALES") return sendJson(response, 400, { error: "Confirmation explicite requise." });
+    const gmailRevocation = await gmail.clear();
     state = initialState();
     state.schedule.enabled = false;
-    audit("Données locales réinitialisées");
+    audit("Données locales réinitialisées", gmailRevocation.revoked ? "Accès Gmail absent ou révoqué." : gmailRevocation.message || "Vérifie la révocation dans les paramètres Google.");
     await persistState();
-    return sendJson(response, 200, { cleared: true });
+    return sendJson(response, 200, { cleared: true, gmailRevoked: gmailRevocation.revoked, gmailRevocationMessage: gmailRevocation.message || "" });
   }
   return sendJson(response, 404, { error: "Route inconnue." });
 }
@@ -467,7 +554,7 @@ const server = createServer(async (request, response) => {
     if (error instanceof URIError) return sendJson(response, 400, { error: "Chemin URL mal formé." });
     if (error.code === "ENOENT") return sendJson(response, 404, { error: "Fichier introuvable." });
     console.error(error);
-    if (!response.headersSent) sendJson(response, error.status || 500, { error: error.status ? error.message : "Erreur locale inattendue." });
+    if (!response.headersSent) sendJson(response, error.status || 500, { error: error.message || "Erreur locale inattendue." });
     else response.destroy();
   }
 });
@@ -478,6 +565,7 @@ server.on("error", (error) => {
 });
 
 await loadState();
+await gmail.load();
 server.listen(PORT, HOST, () => {
   console.log(`Compagnon EmploiIA actif sur ${BASE_URL}`);
   console.log("Il ne peut agir que localement. Ferme cette fenêtre ou appuie sur Ctrl+C pour l'arrêter.");
@@ -487,4 +575,12 @@ const scheduler = setInterval(() => {
   runDueSchedules().catch((error) => console.error(`Erreur de planification: ${error.message}`));
 }, 15_000);
 scheduler.unref();
+const gmailScheduler = setInterval(() => {
+  if (!gmail.status().monitorEnabled) return;
+  scanGmail().catch((error) => console.error(`Erreur de surveillance Gmail: ${error.message}`));
+}, 15 * 60_000);
+gmailScheduler.unref();
+if (gmail.status().monitorEnabled) {
+  scanGmail().catch((error) => console.error(`Erreur de surveillance Gmail: ${error.message}`));
+}
 process.on("SIGINT", () => server.close(() => process.exit(0)));

@@ -33,15 +33,50 @@
     <section class="panel">
       <div class="section-heading">
         <div><p class="eyebrow">Accès et autorisations</p><h2>Permissions actuelles</h2></div>
-        <span class="badge">Révocation locale : fermer l'application</span>
+        <span class="badge">Arrêt et révocation décrits ci-dessous</span>
       </div>
       <div class="permission-grid">
         <article class="permission allowed"><strong>Recherches publiques</strong><span>Activé · ouvre les liens uniquement quand tu cliques.</span></article>
         <article class="permission"><strong>Contrôle du navigateur</strong><span>Désactivé · aucune page ni session de connexion n'est pilotée.</span></article>
-        <article class="permission"><strong>Gmail</strong><span>Non connecté · aucun e-mail n'est lu ni envoyé.</span></article>
+        <article class="permission"><strong id="gmail-permission-title">Gmail</strong><span id="gmail-permission-detail">Non connecté · aucun e-mail n'est lu ni envoyé.</span></article>
         <article class="permission"><strong>Envoi de candidatures</strong><span>Confirmation manuelle · aucun formulaire n'est soumis.</span></article>
       </div>
-      <p class="fineprint">Tes mots de passe Google et des sites d'emploi ne sont jamais demandés ni enregistrés par ce compagnon. Gmail n'est pas connecté. L'IA locale nécessite Ollama et un modèle installé sur cet ordinateur.</p>
+      <p class="fineprint">Tes mots de passe Google et des sites d'emploi ne sont jamais demandés ni enregistrés par ce compagnon. L'état Gmail est indiqué ci-dessous. L'IA locale nécessite Ollama et un modèle installé sur cet ordinateur.</p>
+    </section>
+
+    <section class="panel" id="gmail-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">Surveillance des réponses</p><h2>Connexion Gmail sécurisée</h2></div>
+        <span id="gmail-status" class="badge">Non connecté</span>
+      </div>
+      <p class="fineprint">Dans <a href="https://console.cloud.google.com/auth/clients" target="_blank" rel="noopener noreferrer">Google Cloud OAuth Clients</a>, crée un client « Desktop app », active l'API Gmail et ajoute ton compte comme utilisateur test si l'application est en mode Test. Les portées demandées sont la lecture des messages et l'envoi d'un message unique après confirmation. Google peut afficher un avertissement d'application non vérifiée à cause de ces portées sensibles/restreintes. Les jetons et le secret OAuth sont chiffrés avec DPAPI dans ton compte Windows.</p>
+      <form id="gmail-config-form" class="form-grid">
+        <label class="field"><span>Identifiant client OAuth Desktop</span><input name="clientId" required maxlength="300" autocomplete="off" placeholder="…apps.googleusercontent.com"></label>
+        <label class="field"><span>Secret client OAuth (jamais partagé)</span><input name="clientSecret" type="password" required maxlength="300" autocomplete="new-password"></label>
+        <button class="button button-outline" type="submit">Enregistrer la configuration OAuth</button>
+      </form>
+      <div id="gmail-configured" class="fineprint hidden">Client OAuth configuré. La valeur secrète n'est pas réaffichée. <button id="gmail-change-config" class="text-button" type="button">Remplacer la configuration</button></div>
+      <div class="gmail-controls">
+        <button id="gmail-connect" class="button button-primary" type="button">Connecter mon compte Google</button>
+        <button id="gmail-disconnect" class="button button-outline" type="button">Révoquer et déconnecter Gmail</button>
+        <label class="switch-row gmail-switch"><input id="gmail-monitor" type="checkbox"><span>Surveiller toutes les 15 minutes les 10 messages récents correspondant aux mots-clés d'emploi</span></label>
+        <button id="gmail-scan" class="button button-outline" type="button">Vérifier maintenant</button>
+      </div>
+      <p id="gmail-monitor-status" class="fineprint">La surveillance est arrêtée.</p>
+      <div id="gmail-messages" class="stack"></div>
+      <form id="gmail-compose-form" class="form-grid gmail-compose">
+        <h3 class="full">Préparer un e-mail — envoi toujours confirmé séparément</h3>
+        <label class="field"><span>Destinataire unique</span><input name="to" type="email" required maxlength="254"></label>
+        <label class="field"><span>Objet</span><input name="subject" required maxlength="200"></label>
+        <label class="field full"><span>Message</span><textarea name="body" rows="5" required maxlength="10000"></textarea></label>
+        <button id="gmail-prepare-send" class="button button-outline" type="submit">Préparer l'envoi</button>
+      </form>
+      <div id="gmail-send-preview" class="send-preview hidden">
+        <strong>Vérifie le destinataire et le contenu avant envoi</strong>
+        <p id="gmail-send-to"></p><p id="gmail-send-subject"></p><pre id="gmail-send-body"></pre>
+        <button id="gmail-confirm-send" class="button button-danger" type="button">Confirmer et envoyer cet e-mail</button>
+        <button id="gmail-cancel-send" class="button button-outline" type="button">Annuler</button>
+      </div>
     </section>
 
     <section class="panel">
