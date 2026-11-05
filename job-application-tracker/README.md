@@ -51,4 +51,30 @@ Les nouveaux utilisateurs peuvent recevoir un e-mail de confirmation avant leur 
 - Calcule une adéquation indicative à partir du titre, des compétences et du lieu renseignés dans le profil et l’annonce. Le détail du score est visible avant enregistrement; ce calcul simple n’est ni une évaluation ATS ni une garantie d’adéquation. Le score reste modifiable.
 - Détecte les offres déjà enregistrées à la même adresse, permet de trier par adéquation ou échéance et d’exporter les offres en JSON. L’export contient les descriptions et notes des offres; conserve le fichier de façon privée.
 - Génère des brouillons de candidature en mettant en avant les compétences du profil repérées dans l’annonce, ainsi que des brouillons de prise de contact. Relis et adapte chaque texte; aucun compte tiers n’est créé et aucun message n’est envoyé automatiquement.
-- Le compagnon Windows avec accès local explicite n’est pas encore inclus. Le site Vercel ne peut pas lire les autres fenêtres du navigateur, les mots de passe enregistrés, les fichiers locaux ou agir sur l’ordinateur. Une application locale distincte nécessitera une installation et une autorisation explicite.
+- Le site Vercel ne peut pas lire les autres fenêtres du navigateur, les mots de passe enregistrés ou les fichiers locaux. Le compagnon Windows local, ses autorisations et ses limites sont décrits ci-dessous.
+
+## Compagnon Windows local (première version)
+
+Le compagnon est un programme Node.js local, distinct du site Vercel. Il écoute uniquement sur `127.0.0.1:8788` et n'ouvre aucun port sur le réseau.
+
+1. Installe Node.js LTS si nécessaire.
+2. Double-clique sur `companion/Demarrer-Compagnon.bat`, ou lance `npm.cmd run companion` depuis ce dossier.
+3. Ouvre `http://127.0.0.1:8788` dans ton navigateur.
+4. Le profil de recherche est enregistré dans `%LOCALAPPDATA%\EmploiIA\Companion\state.json`. Il ne contient pas de mot de passe ni de jeton Gmail.
+
+### Ce qu'il fait actuellement
+
+- Prépare cinq recherches d'emploi à 10 h et cinq autres à 15 h, heure d'Abidjan, lorsque la planification est activée. À 10 h, il ajoute cinq recherches de missions sur Malt, Upwork, ComeUp, Fiverr et LinkedIn Services. Les recherches sont des liens à ouvrir volontairement; le compagnon ne lance pas des dizaines d'onglets.
+- Enregistre les offres que tu saisis, calcule une adéquation heuristique explicable, suit leur statut et prépare un brouillon local.
+- Peut utiliser un modèle **Ollama déjà installé et démarré localement** pour créer un brouillon IA. Les requêtes sont envoyées uniquement au service Ollama de cet ordinateur (`127.0.0.1:11434`); le compagnon n'installe pas de modèle et n'envoie pas de contenu à un fournisseur cloud. Le modèle est détecté dans le tableau de bord.
+- Avec Ollama disponible, le chat conserve jusqu'à 20 échanges récents (40 messages) pour donner du contexte. La conversation peut être effacée séparément. Sans modèle local disponible, le compagnon affiche l'état et désactive le chat IA.
+- Écrit un journal local des recherches planifiées, modifications de profil, offres et brouillons. Le bouton « Effacer les données du compagnon » demande une confirmation et met la planification en pause.
+- La planification fonctionne uniquement tant que le compagnon reste ouvert. Pour le lancer à chaque ouverture de session Windows, exécute `companion/Activer-Demarrage-Windows.ps1` et confirme la demande. Pour révoquer ce démarrage automatique, exécute `companion/Desactiver-Demarrage-Windows.ps1`. Ces scripts n'utilisent pas les droits administrateur.
+
+### Autorisations et limites actuelles
+
+- **Aucune candidature ni aucun message n'est envoyé automatiquement.** Le compagnon prépare des recherches et des brouillons; relis-les et envoie-les toi-même sur la plateforme.
+- Gmail, la lecture de la boîte de réception, le contrôle d'autres fenêtres et l'automatisation de formulaires ne sont pas implémentés. Aucun mot de passe de site tiers n'est demandé. N'active pas ces accès en donnant tes identifiants au programme.
+- Le générateur sans Ollama repose sur des règles simples, pas sur un modèle d'IA. Les correspondances et brouillons sont indicatifs; vérifie chaque affirmation.
+- Ce compagnon ne synchronise pas ses données avec Supabase et ne réveille pas un PC en veille. Arrête-le en fermant sa fenêtre terminal ou en appuyant sur `Ctrl+C`.
+- La mémoire locale (profil, offres, journal et conversation) est un fichier du profil Windows. Efface la conversation ou toutes les données depuis l'interface; sinon, arrête le compagnon puis supprime uniquement le fichier `state.json` indiqué par le tableau de bord.

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Compagnon local EmploiIA</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">EmploiIA<span>.</span></a>
+    <span class="local-label">Compagnon local · cet ordinateur uniquement</span>
+  </header>
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Assistant de recherche contrôlé</p>
+        <h1>Tu gardes la main sur chaque envoi.</h1>
+        <p>Prépare des recherches aux horaires choisis, garde une mémoire locale de tes pistes et rédige des brouillons adaptés à ton profil.</p>
+      </div>
+      <aside class="control-card">
+        <span id="clock">Chargement…</span>
+        <label class="switch-row"><input id="schedule-enabled" type="checkbox"><span>Préparer les recherches à 10 h et 15 h (Abidjan)</span></label>
+        <p id="schedule-status" class="muted"></p>
+        <button id="run-now" class="button button-primary" type="button">Préparer une recherche maintenant</button>
+        <p class="fineprint">Le compagnon doit rester ouvert. Les horaires créent une liste de liens; ils n'ouvrent pas le navigateur et n'envoient rien.</p>
+      </aside>
+    </section>
+
+    <div id="global-message" class="message" role="status" aria-live="polite"></div>
+    <section class="panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">Accès et autorisations</p><h2>Permissions actuelles</h2></div>
+        <span class="badge">Révocation locale : fermer l'application</span>
+      </div>
+      <div class="permission-grid">
+        <article class="permission allowed"><strong>Recherches publiques</strong><span>Activé · ouvre les liens uniquement quand tu cliques.</span></article>
+        <article class="permission"><strong>Contrôle du navigateur</strong><span>Désactivé · aucune page ni session de connexion n'est pilotée.</span></article>
+        <article class="permission"><strong>Gmail</strong><span>Non connecté · aucun e-mail n'est lu ni envoyé.</span></article>
+        <article class="permission"><strong>Envoi de candidatures</strong><span>Confirmation manuelle · aucun formulaire n'est soumis.</span></article>
+      </div>
+      <p class="fineprint">Tes mots de passe Google et des sites d'emploi ne sont jamais demandés ni enregistrés par ce compagnon. Gmail n'est pas connecté. L'IA locale nécessite Ollama et un modèle installé sur cet ordinateur.</p>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">Mémoire locale</p><h2>Profil de recherche</h2></div></div>
+      <form id="profile-form" class="form-grid">
+        <label class="field"><span>Nom</span><input name="fullName" required maxlength="160"></label>
+        <label class="field"><span>Métiers recherchés (séparés par des virgules)</span><textarea name="roles" required rows="2"></textarea></label>
+        <label class="field"><span>Compétences (séparées par des virgules)</span><textarea name="skills" required rows="3"></textarea></label>
+        <label class="field"><span>Pays / lieux (séparés par des virgules)</span><input name="locations" required></label>
+        <label class="field"><span>Portfolio (HTTPS)</span><input name="portfolioUrl" type="url"></label>
+        <label class="field"><span>CV (HTTPS)</span><input name="cvUrl" type="url"></label>
+        <button class="button button-outline" type="submit">Enregistrer mon profil local</button>
+      </form>
+      <p class="fineprint">Stockage sur cet ordinateur, dans le dossier indiqué en bas de page. Ces données ne sont pas synchronisées avec Supabase.</p>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">Recherches planifiées et manuelles</p><h2>Liens à consulter</h2></div>
+        <button id="refresh" class="button button-outline" type="button">Actualiser</button>
+      </div>
+      <div id="batches" class="stack"></div>
+      <p id="empty-batches" class="empty hidden">Aucune recherche préparée. Lance-en une ou laisse le compagnon actif à 10 h / 15 h.</p>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">Suivi et brouillons</p><h2>Offres enregistrées</h2></div></div>
+      <form id="offer-form" class="form-grid">
+        <label class="field"><span>Entreprise</span><input name="company" required maxlength="160"></label>
+        <label class="field"><span>Poste / projet</span><input name="title" required maxlength="200"></label>
+        <label class="field"><span>Lieu</span><input name="location"></label>
+        <label class="field"><span>Lien de l'offre (HTTPS)</span><input name="url" type="url" required></label>
+        <label class="field full"><span>Description de l'offre</span><textarea name="description" rows="4" maxlength="12000"></textarea></label>
+        <button class="button button-primary" type="submit">Enregistrer cette offre</button>
+      </form>
+      <p class="fineprint">Le score est une heuristique locale non-IA. Les brouillons sont à relire; les offres et descriptions restent sur cet ordinateur.</p>
+      <div class="ai-status"><strong>IA locale (Ollama)</strong><span id="ai-message">Vérification…</span><label class="field"><span>Modèle local</span><select id="ai-model" aria-label="Modèle IA local"></select></label></div>
+      <div id="offers" class="stack"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">Mémoire conversationnelle privée</p><h2>Parler avec l'assistant local</h2></div>
+        <button id="clear-chat" class="button button-outline" type="button">Effacer la conversation</button>
+      </div>
+      <div id="conversation" class="conversation" aria-live="polite"></div>
+      <form id="chat-form" class="chat-form">
+        <label class="field"><span>Question ou consigne de rédaction</span><textarea name="message" rows="3" maxlength="2000" required placeholder="Ex. Aide-moi à comparer ces deux offres freelance…"></textarea></label>
+        <button id="send-chat" class="button button-primary" type="submit">Envoyer à l'IA locale</button>
+      </form>
+      <p class="fineprint">La mémoire est stockée sur cet ordinateur et envoyée uniquement au modèle Ollama local quand tu l'utilises. L'assistant peut conseiller ou rédiger; il n'a aucun outil pour envoyer des candidatures ou des e-mails.</p>
+    </section>
+
+    <section class="panel">
+      <div class="section-heading"><div><p class="eyebrow">Transparence</p><h2>Journal des actions locales</h2></div></div>
+      <ol id="audit" class="audit-list"></ol>
+      <button id="clear-data" class="button button-danger" type="button">Effacer les données du compagnon</button>
+    </section>
+  </main>
+  <footer>
+    <p>Limité à <code>127.0.0.1</code> · arrêt : fermer la fenêtre du terminal · fuseau : Africa/Abidjan</p>
+    <p>Dossier de mémoire : <code id="data-directory">Chargement…</code></p>
+  </footer>
+</body>
+</html>
