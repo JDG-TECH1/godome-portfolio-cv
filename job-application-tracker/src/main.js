@@ -228,6 +228,96 @@ function renderOfferForm() {
     </form>`;
 }
 
+function renderAssistant() {
+  const firstRole = (profile?.target_roles || "").split(",")[0].trim();
+  return `
+    <section class="assistant-panel">
+      <div class="assistant-heading">
+        <div>
+          <div class="eyebrow">Assistant de recherche</div>
+          <h2>Des pistes ciblées, à vérifier avant d’agir.</h2>
+          <p>Choisis un métier et un pays pour ouvrir des recherches sur des plateformes publiques.</p>
+        </div>
+        <div class="monthly-goal"><strong id="month-count">0</strong><span>/ 200 candidatures ce mois-ci</span></div>
+      </div>
+      <form id="agent-search-form" class="agent-search-form">
+        ${field("agent_role", "Métier ou service recherché", firstRole, { required: true, placeholder: "Développeur Full Stack" })}
+        ${field("agent_location", "Pays ou région", (profile?.target_locations || "").split(",")[0].trim() || "Monde entier", { required: true, placeholder: "Monde entier" })}
+        <label class="field" for="agent-mode"><span>Type de recherche</span><select id="agent-mode" name="mode"><option value="jobs">Emploi salarié</option><option value="clients">Missions / clients</option></select></label>
+        <button class="button button-primary" type="submit">Préparer les recherches</button>
+      </form>
+      <div id="agent-search-results" class="agent-search-results" aria-live="polite"></div>
+      <div class="draft-grid">
+        <form id="job-draft-form" class="draft-card">
+          <h3>Préparer une candidature</h3>
+          <p>Génère un brouillon à relire et personnaliser avant tout envoi.</p>
+          ${field("draft_company", "Entreprise", "", { required: true })}
+          ${field("draft_title", "Poste", "", { required: true })}
+          <button class="button button-outline" type="submit">Créer mon brouillon</button>
+          <textarea id="job-draft-output" class="draft-output hidden" rows="8" readonly aria-label="Brouillon de candidature"></textarea>
+          <button class="button button-outline copy-draft hidden" data-copy="job-draft-output" type="button">Copier le brouillon</button>
+        </form>
+        <form id="client-draft-form" class="draft-card">
+          <h3>Préparer une prise de contact</h3>
+          <p>Un message de prospection à vérifier ; aucun message n’est envoyé automatiquement.</p>
+          ${field("client_name", "Nom du client ou de l’entreprise", "", { required: true })}
+          ${field("client_need", "Besoin repéré", "", { required: true, rows: 2, placeholder: "Ex. refonte d’une application web" })}
+          <button class="button button-outline" type="submit">Rédiger une proposition</button>
+          <textarea id="client-draft-output" class="draft-output hidden" rows="8" readonly aria-label="Brouillon de prise de contact"></textarea>
+          <button class="button button-outline copy-draft hidden" data-copy="client-draft-output" type="button">Copier le brouillon</button>
+        </form>
+      </div>
+      <p class="safety-note">Les recherches ouvrent des pages publiques ; elles ne garantissent pas l’exhaustivité. Les comptes tiers, candidatures et prises de contact restent à créer, vérifier et envoyer par toi. N’enregistre pas ici de mots de passe tiers.</p>
+    </section>`;
+}
+
+function searchLinks(role, locationName, mode) {
+  const query = `${role} ${locationName}`.trim();
+  const google = (site, label) => ({
+    label,
+    url: `https://www.google.com/search?q=${encodeURIComponent(`site:${site} ${query} ${mode === "jobs" ? "emploi offre" : "freelance mission client"}`)}`,
+  });
+  const generalSearch = (label) => ({
+    label,
+    url: `https://www.google.com/search?q=${encodeURIComponent(`${query} ${mode === "jobs" ? "emploi offre" : "freelance mission client"}`)}`,
+  });
+  if (mode === "clients") {
+    return [
+      google("malt.fr", "Rechercher sur Malt"),
+      google("upwork.com", "Rechercher sur Upwork"),
+      google("linkedin.com/services", "Rechercher des clients LinkedIn"),
+      google("comeup.com", "Rechercher sur ComeUp"),
+      generalSearch("Recherche web générale"),
+    ];
+  }
+  const links = [
+    { label: "Rechercher sur LinkedIn", url: `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(role)}&location=${encodeURIComponent(locationName)}` },
+    google("linkedin.com/jobs", "Autres offres LinkedIn"),
+    google("jobbank.gc.ca", "Offres au Canada (Job Bank)"),
+    google("hellowork.com", "Offres en France (HelloWork)"),
+    google("francetravail.fr", "Offres en France (France Travail)"),
+  ];
+  if (/côte d.?ivoire|cote d.?ivoire|abidjan|monde|world/i.test(locationName)) {
+    links.push(google("emploi.ci", "Offres en Côte d’Ivoire"));
+  }
+  links.push(generalSearch("Recherche web générale"));
+  return links;
+}
+
+function buildJobDraft(company, title) {
+  const name = profile?.full_name || "Candidat";
+  const skillList = (profile?.skills || "").split(",").map((skill) => skill.trim()).filter(Boolean).slice(0, 6).join(", ");
+  const portfolio = profile?.portfolio_url ? `Mon portfolio : ${profile.portfolio_url}` : "";
+  const cv = profile?.cv_url ? `Vous pouvez également consulter mon CV : ${profile.cv_url}` : "";
+  return `Objet : Candidature au poste de ${title}\n\nMadame, Monsieur,\n\nJe vous adresse ma candidature pour le poste de ${title} au sein de ${company}. Développeur Full Stack, je conçois et réalise des applications adaptées aux besoins métier, de l’analyse jusqu’au déploiement.\n\nMon expérience m’a permis de travailler avec ${skillList || "des technologies web et des bases de données modernes"}, ainsi que sur l’intégration d’API et de solutions d’intelligence artificielle générative. Méthodique et autonome, je veille à proposer des solutions fiables et maintenables.\n\nJe serais heureux d’échanger avec vous sur les besoins de votre équipe et sur la manière dont je pourrais y contribuer.\n\n${portfolio}\n${cv}\n\nCordialement,\n${name}`;
+}
+
+function buildClientDraft(company, need) {
+  const name = profile?.full_name || "Jean-David GODOME";
+  const skills = (profile?.skills || "").split(",").map((skill) => skill.trim()).filter(Boolean).slice(0, 6).join(", ");
+  return `Bonjour,\n\nJ’ai découvert votre besoin concernant « ${need} » et souhaiterais vous proposer mon aide. Je suis ${name}, développeur Full Stack et concepteur de solutions numériques. Je peux vous accompagner sur l’analyse du besoin, la réalisation et la mise en production d’une solution adaptée.\n\nMes compétences couvrent notamment ${skills || "le développement d’applications web"}, l’intégration d’API et l’automatisation. Je serais ravi d’en apprendre davantage sur vos objectifs et vos contraintes afin de vous proposer une approche pertinente, sans engagement.\n\nVous pouvez découvrir mon travail ici : ${profile?.portfolio_url || "portfolio disponible sur demande"}.\n\nSeriez-vous disponible pour un court échange ?\n\nBien cordialement,\n${name}`;
+}
+
 function renderOfferList() {
   const search = document.querySelector("#search").value.toLocaleLowerCase();
   const statusFilter = document.querySelector("#status-filter").value;
@@ -272,7 +362,14 @@ async function loadOffers() {
     return;
   }
   offers = data || [];
-  document.querySelector("#today-count").textContent = offers.filter((offer) => offer.applied_at && new Intl.DateTimeFormat("en-CA").format(new Date(offer.applied_at)) === localDate()).length;
+  const now = new Date();
+  const monthCount = offers.filter((offer) => {
+    if (!offer.applied_at) return false;
+    const applied = new Date(offer.applied_at);
+    return applied.getFullYear() === now.getFullYear() && applied.getMonth() === now.getMonth();
+  }).length;
+  document.querySelector("#hero-month-count").textContent = monthCount;
+  document.querySelector("#month-count").textContent = monthCount;
   renderOfferList();
 }
 
@@ -289,10 +386,11 @@ async function loadDashboard() {
     <header class="topbar"><a class="brand" href="/">Candidatures<span>.</span></a><div class="account-bar"><span>${esc(profile.full_name || currentUser.email)}</span><button id="logout" class="button button-outline" type="button">Déconnexion</button></div></header>
     <main>
       <section class="hero">
-        <div><div class="eyebrow">Recherche d’emploi · espace privé</div><h1>Garde le fil de chaque candidature.</h1><p>Bonjour ${esc((profile.full_name || "").split(" ")[0] || "")}. Enregistre les offres, les échéances et les dates d’envoi, depuis tes appareils.</p></div>
-        <div class="daily-card"><strong id="today-count">0</strong><span>candidatures envoyées aujourd’hui</span><small>Objectif indicatif : 15, sans sacrifier la pertinence.</small></div>
+        <div><div class="eyebrow">Recherche d’emploi · espace privé</div><h1>Garde le fil de chaque candidature.</h1><p>Bonjour ${esc((profile.full_name || "").split(" ")[0] || "")}. Explore des pistes, prépare tes dossiers et suis tes démarches depuis tes appareils.</p></div>
+        <div class="daily-card"><strong id="hero-month-count">0</strong><span>candidatures envoyées ce mois-ci</span><small>Objectif personnel : 200 par mois. La pertinence passe avant le volume.</small></div>
       </section>
       ${renderProfileEditor()}
+      ${renderAssistant()}
       <div class="toolbar"><div><h2>Mes offres</h2><p class="muted">L’heure d’envoi est enregistrée quand tu marques la candidature comme envoyée.</p></div><button id="add-toggle" class="button button-primary" type="button">+ Ajouter une offre</button></div>
       ${renderOfferForm()}
       <div class="filters"><input id="search" type="search" placeholder="Rechercher une entreprise ou un poste"><select id="status-filter"><option value="">Tous les statuts</option>${statuses.map((status) => `<option>${esc(status)}</option>`).join("")}</select></div>
@@ -324,7 +422,48 @@ async function loadDashboard() {
   document.querySelector("#offer-form").addEventListener("submit", addOffer);
   document.querySelector("#offers").addEventListener("change", updateStatus);
   document.querySelector("#offers").addEventListener("click", deleteOffer);
+  document.querySelector("#agent-search-form").addEventListener("submit", prepareSearches);
+  document.querySelector("#job-draft-form").addEventListener("submit", prepareJobDraft);
+  document.querySelector("#client-draft-form").addEventListener("submit", prepareClientDraft);
+  document.querySelector(".assistant-panel").addEventListener("click", copyDraft);
   await loadOffers();
+}
+
+function prepareSearches(event) {
+  event.preventDefault();
+  const form = new FormData(event.currentTarget);
+  const links = searchLinks(String(form.get("agent_role") || "").trim(), String(form.get("agent_location") || "").trim(), String(form.get("mode") || "jobs"));
+  document.querySelector("#agent-search-results").innerHTML = links.map(({ label, url }) => `<a class="search-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`).join("");
+}
+
+function prepareJobDraft(event) {
+  event.preventDefault();
+  const form = new FormData(event.currentTarget);
+  const output = document.querySelector("#job-draft-output");
+  output.value = buildJobDraft(String(form.get("draft_company") || "").trim(), String(form.get("draft_title") || "").trim());
+  output.classList.remove("hidden");
+  event.currentTarget.querySelector(".copy-draft").classList.remove("hidden");
+}
+
+function prepareClientDraft(event) {
+  event.preventDefault();
+  const form = new FormData(event.currentTarget);
+  const output = document.querySelector("#client-draft-output");
+  output.value = buildClientDraft(String(form.get("client_name") || "").trim(), String(form.get("client_need") || "").trim());
+  output.classList.remove("hidden");
+  event.currentTarget.querySelector(".copy-draft").classList.remove("hidden");
+}
+
+async function copyDraft(event) {
+  const id = event.target.dataset.copy;
+  if (!id) return;
+  const output = document.getElementById(id);
+  try {
+    await navigator.clipboard.writeText(output.value);
+    showSuccess(event.target, "Brouillon copié.");
+  } catch (error) {
+    showError(event.target, `Copie impossible : ${error.message}`);
+  }
 }
 
 async function addOffer(event) {

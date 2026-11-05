@@ -43,3 +43,10 @@ Les nouveaux utilisateurs peuvent recevoir un e-mail de confirmation avant leur 
 - Les mots de passe des sites d’emploi ne sont pas collectés. Le navigateur conserve leurs sessions selon leurs règles.
 - Les annonces, formulaires et envois restent sous ton contrôle; l’interface ne crée aucun compte tiers et ne soumet pas de candidature automatiquement.
 - Le lien CV prérempli est public (l’URL du portfolio); remplace-le si tu veux employer un CV différent.
+
+## Assistant de recherche (première version)
+
+- Prépare des recherches publiques pour un métier et un pays/région sur LinkedIn, Job Bank, HelloWork, France Travail, Emploi.ci, Malt, Upwork et ComeUp. Les plateformes disponibles varient selon le lieu et leurs propres règles; ces liens ne constituent pas une recherche exhaustive ni une collecte automatique des annonces.
+- Suit le nombre de candidatures marquées « Envoyée » dans le mois, avec un objectif indicatif de 200.
+- Génère des brouillons de candidature et de prise de contact à partir du profil. Relis et adapte chaque texte; aucun compte tiers n’est créé et aucun message n’est envoyé automatiquement.
+- Le compagnon Windows avec accès local explicite n’est pas encore inclus. Le site Vercel ne peut pas lire les autres fenêtres du navigateur, les mots de passe enregistrés, les fichiers locaux ou agir sur l’ordinateur. Une application locale distincte nécessitera une installation et une autorisation explicite.
