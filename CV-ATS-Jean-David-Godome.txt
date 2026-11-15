@@ -1,0 +1,80 @@
+GODOMÉ KOFFI Jean-David
+MARKETING AUTOMATION SPECIALIST | ACQUISITION DIGITALE | IA & N8N
+Grand-Bassam, Côte d'Ivoire
+Téléphone : +225 05 86 54 26 86
+E-mail : jeandavidgod@gmail.com
+LinkedIn : https://www.linkedin.com/in/koffi-godome-b4041531a/
+Portfolio : https://godome-portfolio-cv.vercel.app/
+GitHub : https://github.com/JDG-TECH1
+
+PROFIL PROFESSIONNEL
+Spécialiste en marketing digital et automatisation, avec plus de 5 ans d'expérience en gestion de campagnes, acquisition de prospects, CRM automation, workflows n8n et développement d'applications métier. Plus de 115 campagnes publicitaires gérées et plus de 5 000 prospects générés. Combine exécution marketing et compétences techniques pour connecter campagnes, WhatsApp Business, CRM, outils d'IA et applications web. Basé en Côte d'Ivoire, disponible pour des missions à distance.
+
+COMPÉTENCES CLÉS
+Marketing digital : Meta Ads, Facebook Ads, Instagram Ads, Google Ads, TikTok Ads, gestion de campagnes, acquisition de leads, génération de prospects, copywriting, création de contenus, social media marketing, email marketing.
+Mesure et publicité : Google Analytics 4, suivi des conversions, Performance Max, Google Merchant Center, optimisation de campagnes.
+Automatisation et IA : n8n, automatisation de workflows, CRM automation, WhatsApp Business API, agents IA, chatbots IA, IA générative, prompt engineering, OpenAI, Claude, OpenRouter.
+Développement web : HTML, CSS, JavaScript, TypeScript, React, Next.js, Node.js, Express.js, Java, PHP, Python.
+Données et outils : MySQL, PostgreSQL, SQL Server, Supabase, Git, GitHub, Vercel.
+
+EXPÉRIENCE PROFESSIONNELLE
+
+Développeur et Marketeur Digital Freelance | Résidence Executive Hôtel
+Février 2026 – Aujourd'hui | Côte d'Ivoire
+- Réalise des travaux de développement web, d'automatisation et de marketing digital selon les besoins de l'établissement.
+- Contribue aux actions visant à renforcer la visibilité digitale et l'acquisition de clients.
+- Participe à l'amélioration des parcours numériques et des outils utilisés par l'équipe.
+
+Développeur Full Stack | DEV-TECH
+2024 – 2026 | Côte d'Ivoire
+- Développe des applications et fonctionnalités répondant à des besoins métier.
+- Contribue à une solution de facturation électronique intégrant FNE, génération de QR codes et suivi des retours.
+- Intègre des solutions d'IA et met en place des automatisations dans le cadre de projets logiciels.
+
+Marketing Digital | Paradis Lingerie Chics
+2024 – 2026 | Mission client
+- Gère des campagnes et des actions de publicité digitale.
+- Contribue au développement de la visibilité de la marque et à l'acquisition de clients.
+- Suit et optimise les actions marketing selon les résultats disponibles.
+
+Responsable Marketing Digital | CapilCorps
+2024 | Côte d'Ivoire
+- Pilote les campagnes marketing et contribue à la définition de la stratégie digitale.
+- Met en œuvre des actions d'acquisition et de génération de prospects.
+- Coordonne l'exécution des actions marketing selon les objectifs de l'entreprise.
+
+Expert Marketing Digital Freelance | Chishop
+2022 – Mars 2026 | Côte d'Ivoire
+- Gère des campagnes publicitaires et accompagne l'acquisition de clients.
+- Met en œuvre des actions de génération de prospects.
+- Optimise les résultats des campagnes à partir des données disponibles.
+
+Conseiller en Marketing Digital | Menuiserie de la Paix / Dieu dirige mes affaires
+2021 – 2023 | Côte d'Ivoire
+- Accompagne l'entreprise dans ses actions de marketing digital.
+- Exécute des actions marketing et contribue à développer sa visibilité en ligne.
+
+RÉSULTATS ET PROJETS SÉLECTIONNÉS
+- Plus de 115 campagnes publicitaires gérées et plus de 5 000 prospects générés, selon les résultats agrégés communiqués pour les missions.
+- Résultat de campagne Meta Ads communiqué : 436 conversations initiées sur trois promotions pour 63,29 USD de dépenses (environ 0,15 USD par conversation). Les conversations ne sont pas assimilées à des ventes attribuées; la cliente a rapporté des ventes ayant conduit à une rupture de stock.
+- Agent IA commercial WhatsApp : workflow n8n, agent conversationnel, base de connaissances et WhatsApp Business.
+- Facturation-FNE : application Node.js / Express, intégration FNE, génération de QR codes et suivi des retours.
+- TEADIS_AI : agent d'analyse de données en langage naturel, avec restitutions structurées et prise en charge annoncée de 15 langues.
+- Applications et outils web : TEADIS AI Marketing Assistant, plateforme de formation, portail municipal et site Résidence Executive.
+
+FORMATION
+Licence professionnelle en Développement d'Applications et E-Services
+Université Virtuelle de Côte d'Ivoire | 2026
+Mention Bien | Moyenne indiquée dans le CV : 14,51/20
+
+CERTIFICATIONS
+- Google Analytics Certification
+- Google Ads AI-Powered Shopping Ads Certification
+- Google Conversion Optimization Certification
+- Google Ads Search Professional Certification – en cours
+- Certifications Coursera en marketing digital
+- Certifications en développement web et en intelligence artificielle
+
+LANGUES
+Français : courant
+Anglais : niveau technique
