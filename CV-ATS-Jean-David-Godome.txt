@@ -1,5 +1,5 @@
 GODOMÉ KOFFI Jean-David
-MARKETING AUTOMATION SPECIALIST | ACQUISITION DIGITALE | IA & N8N
+META ADS & MARKETING AUTOMATION SPECIALIST | ACQUISITION | N8N & CRM
 Grand-Bassam, Côte d'Ivoire
 Téléphone : +225 05 86 54 26 86
 E-mail : jeandavidgod@gmail.com
@@ -8,10 +8,11 @@ Portfolio : https://godome-portfolio-cv.vercel.app/
 GitHub : https://github.com/JDG-TECH1
 
 PROFIL PROFESSIONNEL
-Spécialiste en marketing digital et automatisation, avec plus de 5 ans d'expérience en gestion de campagnes, acquisition de prospects, CRM automation, workflows n8n et développement d'applications métier. Plus de 115 campagnes publicitaires gérées et plus de 5 000 prospects générés. Combine exécution marketing et compétences techniques pour connecter campagnes, WhatsApp Business, CRM, outils d'IA et applications web. Basé en Côte d'Ivoire, disponible pour des missions à distance.
+Spécialiste Meta Ads, très expérimenté dans la gestion et l'optimisation de campagnes, avec plus de 5 ans d'expérience en marketing digital et acquisition. Plus de 115 campagnes publicitaires gérées et plus de 5 000 prospects générés. Complète cette expertise par l'automatisation CRM, les workflows n8n, WhatsApp Business et le développement d'applications métier. Basé en Côte d'Ivoire, disponible pour des missions à distance.
 
 COMPÉTENCES CLÉS
-Marketing digital : Meta Ads, Facebook Ads, Instagram Ads, Google Ads, TikTok Ads, gestion de campagnes, acquisition de leads, génération de prospects, copywriting, création de contenus, social media marketing, email marketing.
+Meta Ads & Paid Social : Meta Ads (spécialité), Facebook Ads, Instagram Ads, gestion et optimisation de campagnes, acquisition de leads, génération de prospects.
+Autres leviers marketing : Google Ads, TikTok Ads, copywriting, création de contenus, social media marketing, email marketing.
 Mesure et publicité : Google Analytics 4, suivi des conversions, Performance Max, Google Merchant Center, optimisation de campagnes.
 Automatisation et IA : n8n, automatisation de workflows, CRM automation, WhatsApp Business API, agents IA, chatbots IA, IA générative, prompt engineering, OpenAI, Claude, OpenRouter.
 Développement web : HTML, CSS, JavaScript, TypeScript, React, Next.js, Node.js, Express.js, Java, PHP, Python.
