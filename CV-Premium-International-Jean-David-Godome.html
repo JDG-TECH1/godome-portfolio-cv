@@ -20,7 +20,7 @@
     body { margin: 0; background: var(--background); color: var(--ink); font: 10.5pt/1.48 Arial, Helvetica, sans-serif; }
     a { color: inherit; text-decoration: none; }
     .actions { display: flex; justify-content: center; padding: 18px; }
-    .actions button { border: 0; border-radius: 6px; padding: 11px 18px; background: var(--accent); color: white; font: 700 14px Arial, sans-serif; cursor: pointer; }
+    .actions button, .actions a { border: 0; border-radius: 6px; padding: 11px 18px; background: var(--accent); color: white; font: 700 14px Arial, sans-serif; cursor: pointer; }
     main { width: min(900px, calc(100% - 32px)); margin: 0 auto 32px; padding: 44px 54px; background: var(--paper); box-shadow: 0 16px 50px #12203318; }
     header { display: grid; grid-template-columns: minmax(0, 1fr) 118px; gap: 0 24px; padding-bottom: 22px; border-bottom: 2px solid var(--accent); }
     h1 { margin: 0; font-size: 30pt; letter-spacing: -.04em; line-height: 1.05; }
@@ -79,7 +79,10 @@
   </style>
 </head>
 <body>
-  <div class="actions"><button type="button" onclick="window.print()">Print / save as PDF</button></div>
+  <div class="actions">
+    <a href="CV-Premium-International-Jean-David-Godome.pdf" download>Download CV (PDF)</a>
+    <button type="button" onclick="window.print()">Print / save as PDF</button>
+  </div>
   <main>
     <header>
       <h1>GODOMÉ KOFFI Jean-David</h1>
