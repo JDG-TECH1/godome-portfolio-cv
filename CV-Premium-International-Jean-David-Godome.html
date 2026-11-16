@@ -22,11 +22,13 @@
     .actions { display: flex; justify-content: center; padding: 18px; }
     .actions button { border: 0; border-radius: 6px; padding: 11px 18px; background: var(--accent); color: white; font: 700 14px Arial, sans-serif; cursor: pointer; }
     main { width: min(900px, calc(100% - 32px)); margin: 0 auto 32px; padding: 44px 54px; background: var(--paper); box-shadow: 0 16px 50px #12203318; }
-    header { padding-bottom: 22px; border-bottom: 2px solid var(--accent); }
+    header { display: grid; grid-template-columns: minmax(0, 1fr) 118px; gap: 0 24px; padding-bottom: 22px; border-bottom: 2px solid var(--accent); }
     h1 { margin: 0; font-size: 30pt; letter-spacing: -.04em; line-height: 1.05; }
     .headline { margin: 11px 0 16px; color: var(--accent); font-size: 14pt; font-weight: 700; }
     .contact { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); font-size: 9pt; }
     .contact a { text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+    .portrait { grid-column: 2; grid-row: 1 / span 3; width: 118px; height: 118px; border: 4px solid var(--accent); border-radius: 50%; object-fit: cover; object-position: center 38%; }
+    .summary, .proof, .small { grid-column: 1 / -1; }
     .summary { margin: 21px 0 0; max-width: 760px; font-size: 11pt; }
     .proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
     .proof div { padding: 12px 14px; border-radius: 6px; background: var(--accent-light); }
@@ -50,7 +52,12 @@
     .education { margin: 0; }
     @media (max-width: 650px) {
       main { padding: 28px 22px; }
-      .proof { grid-template-columns: 1fr; }
+      header { display: flex; flex-direction: column; }
+      .portrait { order: -1; align-self: flex-end; width: 88px; height: 88px; margin-bottom: 14px; }
+      .proof { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+      .proof div { padding: 8px; }
+      .proof strong { font-size: 14pt; }
+      .proof span { font-size: 7.2pt; }
       .skills { grid-template-columns: 1fr; }
       h1 { font-size: 25pt; }
     }
@@ -59,6 +66,8 @@
       body { background: white; font-size: 9.5pt; }
       .actions { display: none; }
       main { width: auto; margin: 0; padding: 0; box-shadow: none; }
+      header { grid-template-columns: minmax(0, 1fr) 30mm; gap: 0 5mm; }
+      .portrait { width: 30mm; height: 30mm; }
       header { padding-bottom: 5mm; }
       section { margin-top: 5mm; }
       .role { margin-bottom: 3.5mm; }
@@ -83,7 +92,8 @@
         <a href="https://godome-portfolio-cv.vercel.app/">Portfolio</a>
         <a href="https://github.com/JDG-TECH1">GitHub</a>
       </div>
-      <p class="summary">Highly experienced in Meta Ads campaign management and optimization, with 5+ years in digital marketing and lead acquisition. Also a Full-Stack Developer with experience building business applications and integrating AI and automation features. Has managed 115+ advertising campaigns across client engagements and generated 5,000+ prospects according to reported aggregate results. Combines paid social execution with CRM and n8n automation, WhatsApp Business integrations, and web application development. Open to Meta Ads, paid social, Full-Stack Developer and marketing automation opportunities across Côte d'Ivoire, Francophone Africa and remote teams.</p>
+      <img class="portrait" src="portfolio-assets/jean-david-godome.png" alt="Portrait of GODOMÉ KOFFI Jean-David">
+      <p class="summary">Meta Ads specialist with 5+ years in digital marketing and lead acquisition, also experienced in Full-Stack development. Managed 115+ campaigns and generated 5,000+ prospects across client engagements, based on reported aggregate results. Builds business applications and integrates AI, CRM, n8n automation and WhatsApp Business. Available for paid social, development and marketing automation opportunities in Côte d'Ivoire, Francophone Africa and remote teams.</p>
       <div class="proof" aria-label="Selected results">
         <div><strong>115+</strong><span>advertising campaigns managed</span></div>
         <div><strong>5,000+</strong><span>prospects generated, based on reported aggregate mission results</span></div>
@@ -188,7 +198,9 @@
         <li>Google Ads AI-Powered Shopping Ads Certification</li>
         <li>Google Conversion Optimization Certification</li>
         <li>Google Ads Search Professional Certification — in progress</li>
-        <li>Additional Coursera digital marketing, web development and AI certificates</li>
+        <li>Three AI certifications covering generative AI, AI agents, and development assistants (Claude Code, Copilot and Mistral)</li>
+        <li>Several international generative AI courses followed without certification</li>
+        <li>Additional Coursera digital marketing and web development certificates</li>
       </ul>
     </section>
 

@@ -272,10 +272,34 @@
   input:focus, textarea:focus { border-color: #e87500; box-shadow: 0 0 0 3px #e8750022; }
   footer { border-color: var(--line); }
   .footer-row a, .footer-row { color: #55514c; }
+  .menu-toggle {
+    display: none;
+    min-height: 42px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: white;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .project-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 20px; }
+  .project-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filter-button { min-height: 40px; padding: 0 13px; border: 1px solid var(--line); border-radius: 999px; background: white; color: var(--ink); cursor: pointer; font-size: 13px; font-weight: 700; transition: background .2s, color .2s, border-color .2s, transform .2s; }
+  .filter-button:hover { transform: translateY(-1px); border-color: var(--blue); }
+  .filter-button[aria-pressed="true"] { border-color: var(--blue); background: var(--blue); color: white; }
+  .filter-status { margin: 0; color: var(--muted); font-size: 12px; }
+  .project[hidden] { display: none; }
   @media (max-width: 650px) {
     .hero { grid-template-columns: 1fr; gap: 30px; min-height: auto; padding-block: 46px; }
     .hero-copy { grid-column: 1; grid-row: 2; }
     .hero-portrait { width: 168px; grid-column: 1; grid-row: 1; }
+    .menu-toggle { display: inline-flex; }
+    .nav-links { position: absolute; top: calc(100% + 1px); right: 16px; left: 16px; display: none; align-items: stretch; gap: 0; padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: 0 16px 36px #17171718; }
+    .nav-links.is-open { display: flex; flex-direction: column; }
+    .nav-links a:not(.nav-cta) { display: block; padding: 11px 12px; }
+    .nav-links .nav-cta { margin-top: 6px; text-align: center; }
   }
   </style>
 </head>
@@ -284,7 +308,8 @@
   <div class="nav-shell">
     <nav class="wrap" aria-label="Navigation principale">
       <a class="brand" href="#accueil"><span class="brand-mark" aria-hidden="true">GK</span><span>GODOME KOFFI</span></a>
-      <div class="nav-links">
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Ouvrir le menu">Menu <span aria-hidden="true">☰</span></button>
+      <div class="nav-links" id="primary-nav">
         <a href="#apropos">À propos</a><a href="#competences">Expertises</a><a href="#projets">Projets</a><a href="#experience">Expérience</a><a href="#formation">Formation</a><a class="nav-cta" href="#contact">Parlons de votre projet</a>
       </div>
     </nav>
@@ -344,52 +369,61 @@
     <section id="projets">
       <div class="wrap">
         <div class="section-head"><div><p class="eyebrow">Études de cas</p><h2>Meta Ads, automatisation<br>et produits numériques.</h2></div><p class="section-intro">Des campagnes Meta Ads et solutions métier présentées avec leur contexte, leur périmètre et les résultats réellement mesurés.</p></div>
+        <div class="project-controls">
+          <div class="project-filters" role="group" aria-label="Filtrer les projets">
+            <button class="filter-button" type="button" data-filter="all" aria-pressed="true">Tous</button>
+            <button class="filter-button" type="button" data-filter="ads" aria-pressed="false">Meta Ads</button>
+            <button class="filter-button" type="button" data-filter="ai" aria-pressed="false">IA &amp; automatisation</button>
+            <button class="filter-button" type="button" data-filter="development" aria-pressed="false">Développement web</button>
+          </div>
+          <p class="filter-status" id="project-count" aria-live="polite"></p>
+        </div>
         <div class="project-grid">
-          <article class="project">
+          <article class="project" data-category="ads">
             <div class="project-media"><img src="portfolio-assets/meta-conversations-campaign.svg" alt="Illustration d'une campagne Meta Ads et des conversations générées" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>Campagne Meta Ads — conversations</h3></div><p><b>Objectif.</b> Générer des demandes entrantes pour trois promotions.</p><p><b>Action.</b> Gestion et optimisation des campagnes publicitaires Meta Ads.</p><div class="tags"><span class="tag">Meta Ads</span><span class="tag">3 promotions</span><span class="tag">Acquisition</span></div><p class="result"><b>Résultat mesuré.</b> 436 conversations initiées pour 63,29 USD de dépenses, soit environ 0,15 USD par conversation. La cliente a rapporté des ventes ayant conduit à une rupture de stock; le chiffre d’affaires et les ventes n’ont pas été attribués indépendamment.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="ai">
             <div class="project-media"><img src="portfolio-assets/teadis-ai-bi.svg" alt="Illustration de l’agent TEADIS_AI et de l’analyse de données" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>TEADIS_AI</h3></div><p><b>Problème.</b> Rendre les données métier plus faciles à explorer et à comprendre.</p><p><b>Solution.</b> Agent IA qui interroge des données en langage naturel et produit des restitutions structurées et visuelles.</p><div class="tags"><span class="tag">IA générative</span><span class="tag">Agent IA</span><span class="tag">Analyse de données</span><span class="tag">15 langues</span></div><p class="result"><b>Résultat.</b> Exploration de données dans plusieurs langues via une interface conversationnelle.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="ai">
             <div class="project-media"><img src="portfolio-assets/whatsapp-agent.svg" alt="Illustration d’un agent conversationnel WhatsApp" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>Agent IA commercial WhatsApp</h3></div><p><b>Problème.</b> Traiter efficacement les demandes commerciales récurrentes.</p><p><b>Solution.</b> Workflow connecté à une base de connaissances et à WhatsApp Business pour automatiser le premier niveau de réponse.</p><div class="tags"><span class="tag">n8n</span><span class="tag">WhatsApp Business API</span><span class="tag">Agent conversationnel</span></div><p class="result"><b>Résultat.</b> Un parcours conversationnel conçu pour accélérer le traitement des demandes entrantes.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="development">
             <div class="project-media"><img src="portfolio-assets/facturation-fne.svg" alt="Illustration du parcours de facturation électronique FNE" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>Facturation-FNE</h3></div><p><b>Besoin.</b> Numériser la facturation d’un groupe agricole multi-filières.</p><p><b>Réalisation.</b> Application avec intégration FNE, génération de QR codes et suivi des retours.</p><div class="tags"><span class="tag">Node.js</span><span class="tag">Express.js</span><span class="tag">FNE</span><span class="tag">QR codes</span></div><p class="result"><b>Client.</b> Groupe ivoirien des filières café, cacao, anacarde et autres productions.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="development">
             <div class="project-media"><img src="portfolio-assets/mairie-bonoua-photo.jpg" alt="Bâtiment de la mairie de Bonoua avec le drapeau ivoirien" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>Portail numérique — Mairie de Bonoua</h3></div><p><b>Problème.</b> Simplifier l’accès aux informations et démarches municipales.</p><p><b>Solution.</b> Portail pour les démarches citoyennes, le suivi des demandes et la gestion des contenus publics.</p><div class="tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Services publics</span><span class="tag">Projet en cours</span></div><p class="result"><b>Résultat.</b> Projet en cours de réalisation avec une équipe, porté par une ambition de centralisation des services.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="development">
             <div class="project-media"><img src="portfolio-assets/accompadom-education.svg" alt="Illustration de la plateforme d’accompagnement scolaire AccompaDom" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>AccompaDom</h3></div><p><b>Besoin.</b> Mettre en relation apprenants et accompagnateurs scolaires.</p><p><b>Contribution.</b> Développement d’espaces de compte et du parcours d’inscription à la plateforme.</p><div class="tags"><span class="tag">Plateforme web</span><span class="tag">Éducation</span><span class="tag">Parcours utilisateur</span></div><p class="result"><b>Fonctionnalités.</b> Comptes apprenants et accompagnateurs, inscription en ligne.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="ai">
             <div class="project-media"><img src="portfolio-assets/jarvis-personal-assistant.svg" alt="Illustration du kit d’assistant personnel Jarvis" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>Jarvis Starter Kit · TEADIS</h3></div><p><b>Problème.</b> Personnaliser un assistant de développement selon le contexte et les habitudes de son utilisateur.</p><p><b>Solution.</b> Kit guidé comprenant contexte utilisateur, commandes dédiées et veille personnalisée.</p><div class="tags"><span class="tag">Claude Code</span><span class="tag">Ingénierie de prompts</span><span class="tag">Assistant IA</span></div><p class="result"><b>Résultat.</b> Une base réutilisable pour configurer son assistant personnel.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="ai">
             <div class="project-media"><img src="portfolio-assets/claude-code-registration.svg" alt="Illustration du formulaire d’inscription à la formation Claude Code" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>Inscription formation Claude Code</h3><a class="project-link" href="https://github.com/JDG-TECH1/teadis-paiement-for-claude" target="_blank" rel="noopener noreferrer">Code ↗</a></div><p><b>Problème.</b> Simplifier le recueil d’informations après inscription à une formation.</p><p><b>Solution.</b> Page statique qui ouvre WhatsApp avec un message prérempli.</p><div class="tags"><span class="tag">HTML</span><span class="tag">WhatsApp</span><span class="tag">TEADIS</span></div><p class="result"><b>Résultat.</b> Transmission simplifiée; aucun paiement ni stockage serveur de données.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="development">
             <div class="project-media"><img src="portfolio-assets/teadis-plateforme-formation.png" alt="Aperçu de la plateforme de formation TEADIS" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>Plateforme de formation TEADIS</h3><a class="project-link" href="https://formation-teadis-school.vercel.app/" target="_blank" rel="noopener noreferrer">Site ↗</a></div><p><b>Problème.</b> Présenter des parcours de formation numérique aux apprenants.</p><p><b>Solution.</b> Site de formation en ligne de la marque TEADIS, avec ressources et parcours numériques.</p><div class="tags"><span class="tag">Formation numérique</span><span class="tag">TEADIS</span><span class="tag">GitHub</span></div><p class="result"><b>Résultat.</b> Une vitrine en ligne dédiée aux programmes de formation.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="ai">
             <div class="project-media"><img src="portfolio-assets/teadis-marketing-assistant.svg" alt="Illustration du tableau de bord de l’assistant marketing TEADIS" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>TEADIS AI Marketing Assistant</h3></div><p><b>Problème.</b> Regrouper les tâches de gestion marketing et de vente de formations.</p><p><b>Solution.</b> Socle SaaS avec tableau de bord, génération de brouillons, analyse assistée de messages et workflows de préparation de contenus et rapports.</p><div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Supabase</span><span class="tag">OpenRouter</span><span class="tag">n8n</span></div><p class="result"><b>Résultat.</b> Base fonctionnelle; connexions sociales et publication automatique restent à intégrer via les API officielles.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="development">
             <div class="project-media"><img src="portfolio-assets/plantations-geojson-map.svg" alt="Illustration d’une carte de parcelles agricoles GeoJSON" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>Cartographie de plantations</h3></div><p><b>Besoin.</b> Visualiser des parcelles agricoles géolocalisées.</p><p><b>Réalisation.</b> Cartographie de données de plantations pour un groupe des filières café, cacao, anacarde et autres productions.</p><div class="tags"><span class="tag">GeoJSON</span><span class="tag">Cartographie</span><span class="tag">Données agricoles</span></div><p class="result"><b>Client.</b> Groupe agricole ivoirien.</p></div>
           </article>
-          <article class="project">
+          <article class="project" data-category="development">
             <div class="project-media"><img src="https://residence-executive-50-52.vercel.app/images/126419501_162873792169196_7494408621565142301_n.jpg" alt="Aperçu photographique du site Résidence Executive 50-52" loading="lazy"></div>
             <div class="project-body"><div class="project-top"><h3>Résidence Executive 50-52</h3><a class="project-link" href="https://residence-executive-50-52.vercel.app/" target="_blank" rel="noopener noreferrer">Site ↗</a></div><p><b>Problème.</b> Présenter un hôtel à Abidjan et faciliter les demandes de réservation.</p><p><b>Solution.</b> Site multilingue avec présentation des chambres, demandes de réservation, espace client et administration.</p><div class="tags"><span class="tag">Site multilingue</span><span class="tag">Hôtellerie</span><span class="tag">Application web</span></div><p class="result"><b>Résultat.</b> Parcours numérique disponible en ligne pour les visiteurs et l’équipe de gestion.</p></div>
           </article>
@@ -423,13 +457,15 @@
 
     <section id="certifications">
       <div class="wrap">
-        <div class="section-head"><div><p class="eyebrow">Certifications</p><h2>Formation continue.</h2></div><p class="section-intro">Certifications Google communiquées et formation continue en marketing, développement et IA.</p></div>
+        <div class="section-head"><div><p class="eyebrow">Certifications</p><h2>Formation continue.</h2></div><p class="section-intro">Certifications Google, certifications en IA et cours internationaux suivis sans certificat.</p></div>
         <div class="cert-grid">
           <article class="cert"><div class="cert-number">Google</div><h3>Google Analytics Certification</h3></article>
           <article class="cert"><div class="cert-number">Google</div><h3>Google Ads AI-Powered Shopping Ads Certification</h3></article>
           <article class="cert"><div class="cert-number">Google</div><h3>Google Conversion Optimization Certification</h3></article>
           <article class="cert cert-pending"><div class="cert-number">En cours</div><h3>Google Ads Search Professional Certification</h3></article>
           <article class="cert"><div class="cert-number">Autres</div><h3>Certifications Coursera en marketing digital, développement web et IA</h3></article>
+          <article class="cert"><div class="cert-number">3 certificats</div><h3>Intelligence artificielle</h3><p>IA générative, agents IA et outils d’assistance au développement : Claude Code, Copilot et Mistral.</p></article>
+          <article class="cert"><div class="cert-number">Cours suivis</div><h3>IA générative — formations internationales</h3><p>Plusieurs cours suivis, sans certificat associé.</p></article>
         </div>
       </div>
     </section>
@@ -459,6 +495,48 @@
   </main>
   <footer><div class="wrap footer-row"><a href="#accueil">GODOMÉ KOFFI · Jean-David</a><span>Meta Ads · Full Stack · Marketing automation · n8n · © 2026</span></div></footer>
   <script>
+    const menuToggle = document.querySelector(".menu-toggle");
+    const primaryNav = document.getElementById("primary-nav");
+    menuToggle.addEventListener("click", function () {
+      const isExpanded = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", String(!isExpanded));
+      menuToggle.setAttribute("aria-label", isExpanded ? "Ouvrir le menu" : "Fermer le menu");
+      primaryNav.classList.toggle("is-open", !isExpanded);
+    });
+    primaryNav.addEventListener("click", function (event) {
+      if (event.target.closest("a")) {
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Ouvrir le menu");
+        primaryNav.classList.remove("is-open");
+      }
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && primaryNav.classList.contains("is-open")) {
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Ouvrir le menu");
+        primaryNav.classList.remove("is-open");
+        menuToggle.focus();
+      }
+    });
+
+    const projectCards = Array.from(document.querySelectorAll(".project-grid .project"));
+    const projectCount = document.getElementById("project-count");
+    document.querySelectorAll(".filter-button").forEach(function (button) {
+      button.addEventListener("click", function () {
+        const category = button.dataset.filter;
+        const visibleCount = projectCards.reduce(function (count, card) {
+          const isVisible = category === "all" || card.dataset.category === category;
+          card.hidden = !isVisible;
+          return count + Number(isVisible);
+        }, 0);
+        document.querySelectorAll(".filter-button").forEach(function (filterButton) {
+          filterButton.setAttribute("aria-pressed", String(filterButton === button));
+        });
+        projectCount.textContent = visibleCount + (visibleCount === 1 ? " projet" : " projets");
+      });
+    });
+    document.querySelector('.filter-button[data-filter="all"]').click();
+
     document.getElementById("contact-form").addEventListener("submit", function (event) {
       event.preventDefault();
       const form = event.currentTarget;
