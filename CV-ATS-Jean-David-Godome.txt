@@ -1,4 +1,4 @@
-GODOME KOFFI
+GODOMÉ KOFFI
 Connu sous le nom de Jean-David
 Expert Meta Ads | IA & Automatisation | Développeur Full Stack
 Grand-Bassam, Côte d'Ivoire
@@ -8,77 +8,76 @@ LinkedIn : https://www.linkedin.com/in/koffi-godome-b4041531a/
 Portfolio : https://godome-portfolio-cv.vercel.app/
 GitHub : https://github.com/JDG-TECH1
 
-PROFIL PROFESSIONNEL
-Spécialiste Meta Ads, très expérimenté dans la gestion et l'optimisation de campagnes, et développeur Full Stack avec une expérience en applications métier. Plus de 5 ans d'expérience en marketing digital, 115+ campagnes gérées et 5 000+ prospects générés. Compétences complémentaires en automatisation CRM, workflows n8n et WhatsApp Business. Basé en Côte d'Ivoire, disponible pour des opportunités et missions à distance en acquisition ou développement.
+RÉSUMÉ PROFESSIONNEL
+Expert Meta Ads et spécialiste du marketing digital avec plus de 5 ans d'expérience en gestion de campagnes et acquisition de prospects. Plus de 115 campagnes pilotées. Résultats agrégés communiqués sur plusieurs missions : 5 000+ prospects générés et, comme indicateur distinct, 5 000+ conversations générées pour environ 700 USD (environ 0,14 USD par conversation). Associe acquisition payante, automatisation n8n, agents IA, intégrations CRM/WhatsApp Business et développement Full Stack (Node.js, React, Next.js). Formateur en marketing digital.
 
 RÉSULTATS CLÉS
-- Plus de 115 campagnes publicitaires gérées et plus de 5 000 prospects générés, selon les résultats agrégés communiqués pour les missions.
-- Campagne Meta Ads communiquée : 436 conversations initiées sur trois promotions pour 63,29 USD de dépenses (environ 0,15 USD par conversation). Les conversations ne sont pas assimilées à des ventes attribuées; la cliente a rapporté des ventes ayant conduit à une rupture de stock.
+- 115+ campagnes publicitaires pilotées auprès de plusieurs entreprises.
+- 5 000+ prospects générés sur plusieurs missions (résultat agrégé communiqué).
+- 5 000+ conversations générées pour environ 700 USD (environ 0,14 USD par conversation; résultat agrégé communiqué).
+- Cas de campagne : 436 conversations pour 63,29 USD de dépenses (environ 0,15 USD par conversation).
+- Des clients ont rapporté des ventes et, dans certains cas, des ruptures de stock. Le chiffre d'affaires et le ROAS n'ont pas été attribués indépendamment.
 
 COMPÉTENCES CLÉS
-Meta Ads & Paid Social : Meta Ads (spécialité), Facebook Ads, Instagram Ads, gestion et optimisation de campagnes, acquisition de leads, génération de prospects.
-Autres leviers marketing : Google Ads, TikTok Ads, copywriting, création de contenus, social media marketing, email marketing.
-Mesure et publicité : Google Analytics 4, suivi des conversions, Performance Max, Google Merchant Center, optimisation de campagnes.
-Automatisation et IA : n8n, automatisation de workflows, CRM automation, WhatsApp Business API, agents IA, chatbots IA, IA générative, prompt engineering, OpenAI, Claude, OpenRouter.
-Développement web : HTML, CSS, JavaScript, TypeScript, React, Next.js, Node.js, Express.js, Java, PHP, Python.
-Données et outils : MySQL, PostgreSQL, SQL Server, Supabase, Git, GitHub, Vercel.
+Paid media et acquisition : Meta Ads, Facebook Ads, Instagram Ads, Google Ads, TikTok Ads, gestion et optimisation de campagnes, génération de prospects.
+Mesure marketing : Google Analytics 4, suivi des conversions, Performance Max, Google Merchant Center.
+Automatisation et IA : n8n, automatisation marketing, agents IA, chatbots, IA générative, prompt engineering, OpenAI, Claude, OpenRouter.
+CRM et intégrations : WhatsApp Business API, intégrations CRM, automatisation de workflows commerciaux.
+Développement frontend : HTML, CSS, JavaScript, TypeScript, React, Next.js.
+Développement backend et données : Node.js, Express.js, Java, PHP, Python, MySQL, PostgreSQL, SQL Server, Supabase.
+Outils : Git, GitHub, Vercel.
 
 EXPÉRIENCE PROFESSIONNELLE
-
 Développeur et Marketeur Digital Freelance | Résidence Executive Hôtel
 Février 2026 – Aujourd'hui | Côte d'Ivoire
-- Réalise des travaux de développement web, d'automatisation et de marketing digital selon les besoins de l'établissement.
-- Contribue aux actions visant à renforcer la visibilité digitale et l'acquisition de clients.
-- Participe à l'amélioration des parcours numériques et des outils utilisés par l'équipe.
+- Réalise des travaux de développement web et d'automatisation adaptés aux besoins opérationnels.
+- Contribue à la visibilité digitale, à l'acquisition client et à l'amélioration des parcours numériques.
+
+Expert Marketing Digital Freelance | Chishop
+2022 – Mars 2026 | Mission client
+- Pilote des campagnes publicitaires et des actions d'acquisition et de génération de prospects.
+- Ajuste les actions marketing à partir des données de campagne disponibles.
 
 Développeur Full Stack | DEV-TECH
 2024 – 2026 | Côte d'Ivoire
-- Développe des applications et fonctionnalités répondant à des besoins métier.
-- Contribue à une solution de facturation électronique intégrant FNE, génération de QR codes et suivi des retours.
-- Intègre des solutions d'IA et met en place des automatisations dans le cadre de projets logiciels.
+- Développe des applications et fonctionnalités métier.
+- Contribue à une application de facturation électronique intégrant FNE, génération de QR codes et suivi des retours.
 
-Marketing Digital | Paradis Lingerie Chics
+Chargé Marketing Digital | Paradis Lingerie Chics
 2024 – 2026 | Mission client
-- Gère des campagnes et des actions de publicité digitale.
-- Contribue au développement de la visibilité de la marque et à l'acquisition de clients.
-- Suit et optimise les actions marketing selon les résultats disponibles.
+- Gère des campagnes digitales pour soutenir la visibilité de marque et l'acquisition client.
+- Suit les performances et adapte les actions selon les résultats disponibles.
 
 Responsable Marketing Digital | CapilCorps
 2024 | Côte d'Ivoire
-- Pilote les campagnes marketing et contribue à la définition de la stratégie digitale.
+- Pilote l'exécution de campagnes et contribue à la stratégie marketing digital.
 - Met en œuvre des actions d'acquisition et de génération de prospects.
-- Coordonne l'exécution des actions marketing selon les objectifs de l'entreprise.
-
-Expert Marketing Digital Freelance | Chishop
-2022 – Mars 2026 | Côte d'Ivoire
-- Gère des campagnes publicitaires et accompagne l'acquisition de clients.
-- Met en œuvre des actions de génération de prospects.
-- Optimise les résultats des campagnes à partir des données disponibles.
 
 Conseiller en Marketing Digital | Menuiserie de la Paix / Dieu dirige mes affaires
 2021 – 2023 | Côte d'Ivoire
-- Accompagne l'entreprise dans ses actions de marketing digital.
-- Exécute des actions marketing et contribue à développer sa visibilité en ligne.
+- Conseille les entreprises sur leurs actions de marketing digital et exécute des initiatives de visibilité.
+
+Les missions freelance et engagements clients ci-dessus se chevauchent sur certaines périodes.
 
 PROJETS SÉLECTIONNÉS
-- Agent IA commercial WhatsApp : workflow n8n, agent conversationnel, base de connaissances et WhatsApp Business.
-- Facturation-FNE : application Node.js / Express, intégration FNE, génération de QR codes et suivi des retours.
-- TEADIS_AI : agent d'analyse de données en langage naturel, avec restitutions structurées et prise en charge annoncée de 15 langues.
-- Applications et outils web : TEADIS AI Marketing Assistant, plateforme de formation, portail municipal et site Résidence Executive.
+Agent IA commercial WhatsApp : conception d'un workflow n8n reliant agent conversationnel, base de connaissances et WhatsApp Business pour traiter les demandes récurrentes.
+Facturation électronique FNE : contribution à une application Node.js / Express avec intégration FNE, génération de QR codes et suivi des retours.
+TEADIS_AI : exploration de données en langage naturel et restitutions structurées; prise en charge annoncée de 15 langues.
+Formation : formateur en marketing digital; conception d'agents IA et automatisations métier.
 
 FORMATION
 Licence professionnelle en Développement d'Applications et E-Services
 Université Virtuelle de Côte d'Ivoire | 2026
-Mention Bien | Moyenne indiquée dans le CV : 14,51/20
+Mention Bien | Moyenne : 14,51/20
 
-CERTIFICATIONS
+CERTIFICATIONS ET FORMATION COMPLÉMENTAIRE
 - Google Analytics Certification
-- Google Ads AI-Powered Shopping Ads Certification
-- Google Conversion Optimization Certification
-- Google Ads Search Professional Certification – en cours
-- Trois certifications en IA : IA générative, agents IA et outils d'assistance au développement (Claude Code, Copilot, Mistral)
-- Plusieurs cours internationaux en IA générative suivis, sans certificat associé
-- Certifications complémentaires en marketing digital et développement web
+- Google Ads AI-Powered Shopping Ads
+- Google Conversion Optimization
+- Google Ads Search Professional — en cours
+- Trois certifications en IA portant sur l'IA générative, les agents IA et les assistants de développement (Claude Code, Copilot, Mistral)
+- Certifications complémentaires en marketing digital et développement web (Coursera)
+- Cours internationaux en IA générative suivis sans certificat associé
 
 LANGUES
 Français : courant
