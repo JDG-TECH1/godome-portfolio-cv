@@ -1,5 +1,5 @@
 GODOMÉ KOFFI Jean-David
-EXPERT EN MARKETING DIGITAL | DÉVELOPPEUR FULL STACK | SPÉCIALISTE EN IA GÉNÉRATIVE ET AUTOMATISATION IA
+Expert Meta Ads | IA & Automatisation | Développeur Full Stack
 Grand-Bassam, Côte d'Ivoire
 Téléphone : +225 05 86 54 26 86
 E-mail : jeandavidgod@gmail.com
@@ -9,6 +9,10 @@ GitHub : https://github.com/JDG-TECH1
 
 PROFIL PROFESSIONNEL
 Spécialiste Meta Ads, très expérimenté dans la gestion et l'optimisation de campagnes, et développeur Full Stack avec une expérience en applications métier. Plus de 5 ans d'expérience en marketing digital, 115+ campagnes gérées et 5 000+ prospects générés. Compétences complémentaires en automatisation CRM, workflows n8n et WhatsApp Business. Basé en Côte d'Ivoire, disponible pour des opportunités et missions à distance en acquisition ou développement.
+
+RÉSULTATS CLÉS
+- Plus de 115 campagnes publicitaires gérées et plus de 5 000 prospects générés, selon les résultats agrégés communiqués pour les missions.
+- Campagne Meta Ads communiquée : 436 conversations initiées sur trois promotions pour 63,29 USD de dépenses (environ 0,15 USD par conversation). Les conversations ne sont pas assimilées à des ventes attribuées; la cliente a rapporté des ventes ayant conduit à une rupture de stock.
 
 COMPÉTENCES CLÉS
 Meta Ads & Paid Social : Meta Ads (spécialité), Facebook Ads, Instagram Ads, gestion et optimisation de campagnes, acquisition de leads, génération de prospects.
@@ -55,9 +59,7 @@ Conseiller en Marketing Digital | Menuiserie de la Paix / Dieu dirige mes affair
 - Accompagne l'entreprise dans ses actions de marketing digital.
 - Exécute des actions marketing et contribue à développer sa visibilité en ligne.
 
-RÉSULTATS ET PROJETS SÉLECTIONNÉS
-- Plus de 115 campagnes publicitaires gérées et plus de 5 000 prospects générés, selon les résultats agrégés communiqués pour les missions.
-- Résultat de campagne Meta Ads communiqué : 436 conversations initiées sur trois promotions pour 63,29 USD de dépenses (environ 0,15 USD par conversation). Les conversations ne sont pas assimilées à des ventes attribuées; la cliente a rapporté des ventes ayant conduit à une rupture de stock.
+PROJETS SÉLECTIONNÉS
 - Agent IA commercial WhatsApp : workflow n8n, agent conversationnel, base de connaissances et WhatsApp Business.
 - Facturation-FNE : application Node.js / Express, intégration FNE, génération de QR codes et suivi des retours.
 - TEADIS_AI : agent d'analyse de données en langage naturel, avec restitutions structurées et prise en charge annoncée de 15 langues.
